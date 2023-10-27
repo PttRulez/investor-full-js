@@ -1,0 +1,21 @@
+{
+  "name": "investor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "client": "cd client && npm start",
+    "client:dev": "cd client && npm run dev",
+    "server": "cd server && npm start",
+    "server:dev": "cd server && npm run start:dev",
+    "assets": "cd assets && ionic serve",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "start:dev": "concurrently \"npm run server:dev\" \"npm run client:dev\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
