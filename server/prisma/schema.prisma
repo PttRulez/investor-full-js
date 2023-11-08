@@ -26,6 +26,7 @@ model Deal {
   portfolio   Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
   price       Decimal
   securityId  Int
+  secType     String
   ticker      String
   type        String
 

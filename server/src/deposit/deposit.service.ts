@@ -17,4 +17,8 @@ export class DepositService {
 
     return this.depositRepository.update(depositData);
   }
+
+  async delete(id: number) {
+    return this.depositRepository.deleteById(id);
+  }
 }

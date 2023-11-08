@@ -1,0 +1,10 @@
+version: '3.9'
+services:
+  investor-nest-testing-db:
+    image: 'postgres:14'
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRESS_USER=postgres
+      - POSTGRES_PASSWORD=943349
+      - POSTGRES_DB=nest_investor_testing

@@ -1,4 +1,5 @@
-import { Fab, styled } from '@mui/material';
+import { Fab } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 export const RightBottomFab = styled(Fab)(({ theme }) => ({
   position: 'fixed',

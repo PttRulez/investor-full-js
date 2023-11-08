@@ -1,30 +1,32 @@
-import { FC } from 'react';
 import DatePickerInput, {
   DatePickerProps,
 } from '../NonFormInputs/DatePickerInput';
-import { Control, Controller } from 'react-hook-form';
+import { Controller, FieldValues } from 'react-hook-form';
+import { ControlledField } from '@/types/ui';
 
-interface FormDatePickerProps extends DatePickerProps {
-  control: Control;
-  name: string;
-}
+interface FormDatePickerProps<T extends FieldValues>
+  extends ControlledField<T>,
+    DatePickerProps {}
 
-const FormDatePicker: FC<FormDatePickerProps> = ({
+const FormDatePicker = <G extends FieldValues>({
   control,
   name,
   onChange,
+  rules,
   ...datePickerProps
-}) => {
+}: FormDatePickerProps<G>) => {
   return (
+    // Делаем свойство rules по аналогии с TexField
     <Controller
       control={control}
       name={name}
+      rules={rules}
       render={({ field }) => (
         <DatePickerInput
-          onChange={(value) => {
+          onChange={(value, ctx) => {
             field.onChange(value);
             if (onChange) {
-              onChange(value);
+              onChange(value, ctx);
             }
           }}
           {...datePickerProps}

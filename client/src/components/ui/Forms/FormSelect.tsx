@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { Control, Controller } from 'react-hook-form';
 import SelectInput, { SelectProps } from '../NonFormInputs/SelectInput';
+import { SelectChangeEvent } from '@mui/material';
 
 interface FormSelectProps extends SelectProps {
   control: Control;
@@ -19,10 +20,10 @@ const FormSelect: FC<FormSelectProps> = ({
       name={name}
       render={({ field }) => (
         <SelectInput
-          onChange={(value) => {
-            field.onChange(value);
+          onChange={(e: SelectChangeEvent) => {
+            field.onChange(e);
             if (onChange) {
-              onChange(value);
+              onChange(e);
             }
           }}
           {...selectProps}

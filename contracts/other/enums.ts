@@ -7,9 +7,17 @@ export enum DealType {
   SELL = 'SELL'
 }
 
+export enum TransactionType {
+  CASHOUT = 'CASHOUT',
+  DEPOSIT = 'DEPOSIT'
+}
+
 export enum SecurityType {
   SHARE = 'SHARE',
   BOND = 'BOND',
+  PIF = 'PIF',
+  INDEX = 'INDEX',
+  FUTURES = 'FUTURES'
 }
 
 export enum Role {

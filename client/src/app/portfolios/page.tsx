@@ -5,8 +5,10 @@ import { Dialog, IconButton } from '@mui/material';
 import AddNewButton from '@/components/ui/AddNewButton';
 import PortfolioForm from './components/PortfolioForm';
 import { useQuery } from '@tanstack/react-query';
-import investorService from '@/axios/investor';
-import AdvancedTable, { AdvancedTableColumn } from '@/components/ui/AdvancedTable/AdvancedTable';
+import investorService from '@/axios/investor/investor.service';
+import AdvancedTable, {
+  AdvancedTableColumn,
+} from '@/components/ui/AdvancedTable/AdvancedTable';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
@@ -21,6 +23,7 @@ const emptyPortfolio: NewPortfolio = {
   name: '',
   compound: false,
 };
+
 export default function PortfoliosPage() {
   const { data: session } = useSession({
     required: true,
@@ -29,7 +32,9 @@ export default function PortfoliosPage() {
     },
   });
 
-  const [portfolioToEdit, setPortfolioToEdit] = useState<Portfolio | NewPortfolio | null>(null);
+  const [portfolioToEdit, setPortfolioToEdit] = useState<
+    Portfolio | NewPortfolio | null
+  >(null);
 
   const { data: portfolioList } = useQuery({
     queryKey: ['allPortfolios'],
@@ -50,14 +55,17 @@ export default function PortfoliosPage() {
       name: 'compound',
       label: 'Составной',
       format: (compound: boolean) => {
-        return compound ? <CheckIcon sx={{ color: 'success.main' }} /> : <CloseIcon sx={{ color: 'error.main' }} />;
+        return compound ? (
+          <CheckIcon sx={{ color: 'success.main' }} />
+        ) : (
+          <CloseIcon sx={{ color: 'error.main' }} />
+        );
       },
       align: 'center',
     },
     {
       name: 'actions',
       label: '',
-      // @ts-error-expected
       render: (_, portfolio) => {
         return (
           <IconButton
@@ -81,9 +89,8 @@ export default function PortfoliosPage() {
         <title>My page title</title>
       </Head>
       <AdvancedTable
-        // @ts-expect-error - надо понять как пофиксить
         columns={columns}
-        rows={portfolioList?.data ?? []}
+        rows={portfolioList ?? []}
         pagination={false}
         rowClick={row => {
           router.push(`/portfolios/${row.id}`);
@@ -104,7 +111,10 @@ export default function PortfoliosPage() {
         }}
       >
         {portfolioToEdit && (
-          <PortfolioForm afterSuccessfulSubmit={() => setPortfolioToEdit(null)} portfolio={portfolioToEdit} />
+          <PortfolioForm
+            afterSuccessfulSubmit={() => setPortfolioToEdit(null)}
+            portfolio={portfolioToEdit}
+          />
         )}
       </Dialog>
     </>

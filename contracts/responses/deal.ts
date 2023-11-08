@@ -8,19 +8,6 @@ export interface IDealResponse {
 	portfolioId: number;
   price: number;
 	securityId: number;
-  type: DealType;
-}
-
-export interface ICreateDeal {
-	amount: number;
-	date: Date;
-	exchange: Exchange;
-	portfolioId: number;
-	price: number;
 	ticker: string;
-	type: DealType;
-}
-
-export interface IUpdateDeal extends Partial<ICreateDeal> {
-	id: number;
+  type: DealType;
 }

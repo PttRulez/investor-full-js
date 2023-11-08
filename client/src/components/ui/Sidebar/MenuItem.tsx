@@ -3,8 +3,8 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  styled,
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import React, { FC, useState } from 'react';
 import Link, { LinkProps } from 'next/link';
 import * as Muicon from '@mui/icons-material';
@@ -36,7 +36,7 @@ const CollapsingMenuItem: FC<{ item: IMenuItem }> = ({ item }) => {
 
   return (
     <>
-      <StyledListItemButton onClick={() => setOpen((prev) => !prev)}>
+      <StyledListItemButton onClick={() => setOpen(prev => !prev)}>
         <ListItemIcon>
           {Muicon[iconName as keyof typeof Muicon] &&
             React.createElement(Muicon[iconName as keyof typeof Muicon])}
@@ -47,7 +47,7 @@ const CollapsingMenuItem: FC<{ item: IMenuItem }> = ({ item }) => {
         </ListItemIcon>
       </StyledListItemButton>
       <Collapse in={open} timeout="auto" unmountOnExit>
-        {children!.map((item) => (
+        {children!.map(item => (
           <MenuItem item={item} key={`${item.link} ${item.title}`} />
         ))}
       </Collapse>

@@ -1,15 +1,12 @@
-import { FC, HTMLInputTypeAttribute } from 'react';
-import { IconButton, styled, TextField } from '@mui/material';
+import { IconButton, TextField, TextFieldProps } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
+import { styled } from '@mui/material/styles';
 
-export interface TextInputProps {
+export type TextInputProps = TextFieldProps & {
   handleClear?: () => void;
-  onChange?: (value: any) => void;
-  label: string;
-  type?: HTMLInputTypeAttribute;
-  value: string | number;
-  variant?: 'standard' | 'filled' | 'outlined' | undefined;
-}
+  decimal?: boolean;
+};
+
 const StyledTextField = styled(TextField)(({ theme }) => ({
   // '& .MuiInput-root': {
   //   minHeight: '40px',
@@ -20,30 +17,29 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
   },
 }));
 
-const TextInput: FC<TextInputProps> = ({
-  handleClear,
-  onChange,
+const TextInput = ({
+  decimal,
   label,
-  type = 'text',
+  handleClear,
+  type,
   value,
   variant = 'standard',
   ...otherProps
-}) => {
+}: TextInputProps) => {
   return (
     // <FormControl fullWidth>
     //   <InputLabel id={label}>{label}</InputLabel>
     <StyledTextField
       InputProps={{
         endAdornment: value ? (
-          <IconButton
-            onClick={handleClear}
-          >
+          <IconButton onClick={handleClear}>
             <ClearIcon />
           </IconButton>
-        ) : '',
+        ) : (
+          ''
+        ),
       }}
       label={<span style={{ marginLeft: '15px' }}>{label}</span>}
-      onChange={onChange}
       type={type}
       value={value}
       variant={variant}

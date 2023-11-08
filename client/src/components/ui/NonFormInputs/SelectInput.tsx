@@ -9,7 +9,6 @@ import {
   SelectChangeEvent,
 } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
-import { SelectList, SelectOption, SxProp } from '../../../types/common';
 
 export interface SelectProps {
   handleClear?: () => void;
@@ -18,7 +17,7 @@ export interface SelectProps {
   labelPropName?: string;
   options: SelectList | SelectOption[];
   sortItems?: boolean;
-  value: any;
+  value?: any;
   sx?: SxProp;
   variant?: 'standard' | 'filled' | 'outlined' | undefined;
 }
@@ -67,7 +66,7 @@ const SelectInput: FC<SelectProps> = ({
         }
       >
         {Array.isArray(options)
-          ? options.map((option) => (
+          ? options.map(option => (
               <MenuItem value={option.id} key={option.id}>
                 {option[labelPropName]}
               </MenuItem>

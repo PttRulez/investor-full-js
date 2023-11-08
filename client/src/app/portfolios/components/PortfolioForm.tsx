@@ -4,25 +4,29 @@ import { useForm } from 'react-hook-form';
 import FormText from '@/components/ui/Forms/FormText';
 import FormCheckBox from '@/components/ui/Forms/FormCheckBox';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import investorService from '@/axios/investor';
-import { CreatePortfolioDto, UpdatePortfolioDto } from '@backend/portfolio/dto';
-import { Portfolio } from '@/types/backend';
-import { NewPortfolio } from '@/types/backend/domains/portfolio';
+import investorService from '@/axios/investor/investor.service';
+import { CreatePortfolioDto, UpdatePortfolioDto } from '@contracts/dtos';
 
 interface PortfolioFormProps {
-  portfolio: Portfolio | NewPortfolio;
+  portfolio: CreatePortfolioDto | UpdatePortfolioDto;
   afterSuccessfulSubmit: () => void;
 }
 
-export default function PortfolioForm({ portfolio, afterSuccessfulSubmit }: PortfolioFormProps) {
-  const { control, handleSubmit, setValue, watch } = useForm<Portfolio>({
+export default function PortfolioForm({
+  portfolio,
+  afterSuccessfulSubmit,
+}: PortfolioFormProps) {
+  const { control, handleSubmit, setValue, watch } = useForm<
+    CreatePortfolioDto | UpdatePortfolioDto
+  >({
     defaultValues: portfolio,
   });
   const watchAll = watch();
   const client = useQueryClient();
 
   const createPortfolio = useMutation(
-    (formData: CreatePortfolioDto) => investorService.portfolio.createPortfolio(formData),
+    (formData: CreatePortfolioDto) =>
+      investorService.portfolio.createPortfolio(formData),
     {
       onSuccess: () => {
         afterSuccessfulSubmit();
@@ -32,7 +36,8 @@ export default function PortfolioForm({ portfolio, afterSuccessfulSubmit }: Port
   );
 
   const updatePortfolio = useMutation(
-    (formData: UpdatePortfolioDto) => investorService.portfolio.updatePortfolio(formData),
+    (formData: UpdatePortfolioDto) =>
+      investorService.portfolio.updatePortfolio(formData),
     {
       onSuccess: () => {
         afterSuccessfulSubmit();
@@ -41,7 +46,7 @@ export default function PortfolioForm({ portfolio, afterSuccessfulSubmit }: Port
     },
   );
 
-  const onSubmit = (formData: Portfolio | NewPortfolio) => {
+  const onSubmit = (formData: CreatePortfolioDto | UpdatePortfolioDto) => {
     if (!('id' in formData)) {
       createPortfolio.mutate(formData);
     } else {
@@ -71,7 +76,12 @@ export default function PortfolioForm({ portfolio, afterSuccessfulSubmit }: Port
           label="Составной"
           checked={watchAll.compound}
         />
-        <Button variant="outlined" color="primary" type="submit" sx={{ color: 'grey.700' }}>
+        <Button
+          variant="outlined"
+          color="primary"
+          type="submit"
+          sx={{ color: 'grey.700' }}
+        >
           Сохранить
         </Button>
       </Stack>

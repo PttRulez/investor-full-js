@@ -32,7 +32,7 @@ export class AuthController {
     });
 
     this.serializeSession(user.id, user.email, user.role, session);
-    console.log('[AuthCOntroller login] user', user);
+
     return user;
   }
 

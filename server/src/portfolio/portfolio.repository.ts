@@ -1,5 +1,5 @@
 import { Portfolio } from './portfolio.model';
-import { PortfolioData, UpdatePortfolioData } from './types';
+import { PrismaCreatePortfolioData, PrismaUpdatePortfolioData } from './types';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -7,7 +7,7 @@ import { PrismaService } from '../prisma/prisma.service';
 export class PortfolioRepository {
   constructor(private prisma: PrismaService) {}
 
-  async create(portfolioData: PortfolioData): Promise<Portfolio> {
+  async create(portfolioData: PrismaCreatePortfolioData): Promise<Portfolio> {
     const newPortfolio = await this.prisma.portfolio.create({
       data: { ...portfolioData },
       include: {
@@ -25,6 +25,7 @@ export class PortfolioRepository {
       include: {
         deposits: true,
         cashouts: true,
+        deals: true,
       },
     });
     if (!foundPortfolio) {
@@ -41,7 +42,7 @@ export class PortfolioRepository {
       include: {
         deposits: true,
         cashouts: true,
-        deals: true,
+        // deals: true,
       },
     });
 
@@ -58,12 +59,14 @@ export class PortfolioRepository {
     return new Portfolio(deleted);
   }
 
-  async update(portfolioData: UpdatePortfolioData): Promise<Portfolio> {
-    const { id, ...withoudId } = portfolioData;
+  async update(
+    portfolioId: number,
+    portfolioData: PrismaUpdatePortfolioData,
+  ): Promise<Portfolio> {
     const updatedPortfolio = await this.prisma.portfolio.update({
-      where: { id },
+      where: { id: portfolioId },
       data: {
-        ...withoudId,
+        ...portfolioData,
       },
       include: {
         deposits: true,

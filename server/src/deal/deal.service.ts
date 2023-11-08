@@ -64,7 +64,12 @@ export class DealService {
       }
     }
     dealModel.setSecurityId(security.id);
-    console.log('dealModel.forPrismaCreate()', dealModel.forPrismaCreate());
+
     return this.dealRepository.create(dealModel.forPrismaCreate());
+  }
+
+  async delete(id: number): Promise<Deal> {
+    const deal = await this.dealRepository.deleteById(id);
+    return deal;
   }
 }

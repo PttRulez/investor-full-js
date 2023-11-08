@@ -8,7 +8,8 @@ export class MoexBondRepository {
   constructor(private prisma: PrismaService) {}
 
   async create(securityData: MoexRepoCreateBond): Promise<MoexBond> {
-    const dbSecurity = await this.prisma.moexShare.create({
+    console.log('[BOND repo securityData]', securityData);
+    const dbSecurity = await this.prisma.moexBond.create({
       data: securityData,
     });
 

@@ -1,42 +1,80 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Logger,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
 import { PortfolioService } from './portfolio.service';
 import { CreatePortfolioDto, UpdatePortfolioDto } from '@contracts/dtos';
 import { GetUserId } from '../auth/decorators';
-import { IPortfolioResponse } from '@contracts/responses';
+import {
+  IPortfolioResponse,
+  IPortfolioListResponse,
+} from '@contracts/responses';
 
-@Controller('portfolios')
+@Controller('portfolio')
 export class PortfolioController {
+  private readonly logger = new Logger(PortfolioController.name);
   constructor(private readonly portfolioService: PortfolioService) {}
 
   @Get()
-  async getAllUserPortfolios(@GetUserId() userId: number): Promise<Record<string, any>[]> {
+  async getAllUserPortfolios(
+    @GetUserId() userId: number,
+  ): Promise<IPortfolioListResponse[]> {
     const portfolios = await this.portfolioService.getAllUserPortfolios(userId);
-    return portfolios.map(p => p.toJSON());
+    return portfolios.map(p => p.toListJSON());
   }
 
   @Get(':id')
-  async getOneById(@GetUserId() userId: number, @Param('id') id: string): Promise<IPortfolioResponse> {
+  async getOneById(
+    @GetUserId() userId: number,
+    @Param('id') id: string,
+  ): Promise<IPortfolioResponse> {
     return this.portfolioService.getOneById(userId, Number(id));
   }
 
   @Post()
-  async create(@GetUserId() userId: number, @Body() dto: CreatePortfolioDto): Promise<Record<string, any>> {
-    const portfolioModel = await this.portfolioService.create({ ...dto, userId });
+  async create(
+    @GetUserId() userId: number,
+    @Body() dto: CreatePortfolioDto,
+  ): Promise<Record<string, any>> {
+    const portfolioModel = await this.portfolioService.create({
+      ...dto,
+      userId,
+    });
     return portfolioModel.toJSON();
   }
 
-  @Patch()
+  @Patch(':id')
   async update(
     @GetUserId() userId: number,
     @Body() updatePortfolioDto: UpdatePortfolioDto,
+    @Param('id') portfolioId: string,
   ): Promise<Record<string, any>> {
-    const portfolioModel = await this.portfolioService.update(userId, updatePortfolioDto);
+    const portfolioModel = await this.portfolioService.update(
+      userId,
+      parseInt(portfolioId),
+      updatePortfolioDto,
+    );
     return portfolioModel.toJSON();
   }
 
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
-  async remove(@GetUserId() userId: number, @Param('id') portfolioId: string): Promise<IPortfolioResponse> {
-    const portfolioModel = await this.portfolioService.remove(userId, Number(portfolioId));
+  async remove(
+    @GetUserId() userId: number,
+    @Param('id') portfolioId: string,
+  ): Promise<IPortfolioResponse> {
+    const portfolioModel = await this.portfolioService.remove(
+      userId,
+      Number(portfolioId),
+    );
     return portfolioModel.toJSON();
   }
 }

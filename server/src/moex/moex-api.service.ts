@@ -1,16 +1,33 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
-import { firstValueFrom } from 'rxjs';
+import { catchError, firstValueFrom } from 'rxjs';
 import { IMoexApiResponseCurrentPrices, IMoexApiResponseSecurityInfo } from './types';
-import { MoexMarket } from '@contracts/responses/moex-securities';
+import { MoexBoard, MoexMarket } from '@contracts/responses/moex-securities';
+import { AxiosError } from 'axios';
 
 @Injectable()
 export class MoexApi {
   private baseUrl = 'https://iss.moex.com/iss';
-  private readonly logger;
+  private readonly logger = new Logger(MoexApi.name);
 
   constructor(private http: HttpService) {
-    this.logger = new Logger(MoexApi.name);
+    http.axiosRef.interceptors.request.use(
+      req => {
+        return req;
+      },
+      err => {
+        console.log('[MoexApi axios request ERROR]: ', err);
+      },
+    );
+
+    http.axiosRef.interceptors.response.use(
+      res => {
+        return res;
+      },
+      err => {
+        console.log('[MoexApi axios response ERROR]: ', err);
+      },
+    );
   }
 
   async getSecurityByTicker(ticker: string): Promise<IMoexApiResponseSecurityInfo> {
@@ -30,16 +47,34 @@ export class MoexApi {
   }
 
   async getStocksCurrentPrices(market: MoexMarket, tickers: string): Promise<IMoexApiResponseCurrentPrices> {
-    const { data } = await firstValueFrom(
-      this.http.get<IMoexApiResponseCurrentPrices>(`engines/stock/markets/${market}/securities.json`, {
-        params: {
-          'iss.meta': 'off',
-          securities: tickers,
-          ['securities.columns']: 'SECID,BOARDID,PREPRICE',
-        },
-      }),
-    );
+    //: Promise<IMoexApiResponseCurrentPrices> {
+    try {
+      const response = await firstValueFrom(
+        this.http
+          .get<IMoexApiResponseCurrentPrices>(`${this.baseUrl}/engines/stock/markets/${market}/securities.json`, {
+            params: {
+              'iss.meta': 'off',
+              securities: tickers,
+              ['securities.columns']: 'SECID,BOARDID,PREVPRICE',
+            },
+          })
+          .pipe(
+            catchError((error: AxiosError) => {
+              console.log(error.response.data);
+              throw 'An error happened!';
+            }),
+          ),
+      );
 
-    return data;
+      if (!response) {
+        return {
+          securities: { data: [['her', MoexBoard.TQBR, 1]] },
+        };
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      console.log('[Moex-Api.Service.getStocksCurrentPrices ERROR]:', e);
+    }
   }
 }
