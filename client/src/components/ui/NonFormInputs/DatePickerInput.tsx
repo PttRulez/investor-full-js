@@ -1,38 +1,41 @@
-import {FC} from 'react';
-import {DesktopDatePicker, LocalizationProvider} from '@mui/x-date-pickers';
-import {IconButton, TextField} from '@mui/material';
+import { FC } from 'react';
+import {
+  DesktopDatePicker,
+  DesktopDatePickerProps,
+  LocalizationProvider,
+} from '@mui/x-date-pickers';
+import { IconButton, TextField } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
-import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import 'dayjs/locale/ru';
-import dayjs from "@/dayjs.config";
+import dayjs from '@/dayjs.config';
+import { Dayjs } from 'dayjs';
 
-export interface DatePickerProps {
+export type DatePickerProps = DesktopDatePickerProps<Dayjs> & {
   error?: boolean;
   handleClear: () => void;
-  onChange: (value: any, keyboardInputValue?: string | undefined) => void;
   label: string;
   value: any;
   variant?: 'standard' | 'filled' | 'outlined' | undefined;
-}
+};
 
-const DatePickerInput: FC<DatePickerProps> = ({
-                                                error = false,
-                                                handleClear,
-                                                label,
-                                                onChange,
-                                                value,
-                                                variant = 'standard',
-                                                ...otherProps
-                                              }) => {
+const DatePickerInput = ({
+  error = false,
+  handleClear,
+  label,
+  onChange,
+  value,
+  variant = 'standard',
+  ...otherProps
+}: DatePickerProps) => {
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ru'>
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ru">
       <DesktopDatePicker
         label={label}
-        onChange={(v) => {
-          if (v) {
-            onChange(v.set('hours', 11));
+        onChange={(v, ctx) => {
+          if (onChange && v) {
+            onChange(v.set('hours', 11), ctx);
           }
-          onChange(v);
         }}
         value={dayjs(value)}
         //@ts-ignore
@@ -42,18 +45,18 @@ const DatePickerInput: FC<DatePickerProps> = ({
               aria-label="toggle password visibility"
               onClick={handleClear}
             >
-              <ClearIcon/>
+              <ClearIcon />
             </IconButton>
           ),
         }}
-        renderInput={(params) => (
+        renderInput={(params: any) => (
           <TextField
             {...params}
             error={error}
             variant={variant}
             sx={{
-              '& .MuiInputBase-root.MuiInput-root': {paddingLeft: '15px'},
-              '& label': {marginLeft: '15px'},
+              '& .MuiInputBase-root.MuiInput-root': { paddingLeft: '15px' },
+              '& label': { marginLeft: '15px' },
             }}
           />
         )}

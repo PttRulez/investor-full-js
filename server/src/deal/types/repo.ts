@@ -1,4 +1,4 @@
-import { DealType, Exchange } from '@contracts/other/enums';
+import { DealType, Exchange, SecurityType } from '@contracts/other/enums';
 import { Prisma } from '@prisma/client';
 
 // Feed them to Prisma
@@ -8,6 +8,7 @@ export type DealPrismaCreateData = {
   exchange: Exchange;
   portfolioId: number;
   price: number;
+  secType: SecurityType;
   securityId: number;
   ticker: string;
   type: DealType;

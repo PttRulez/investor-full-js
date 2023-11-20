@@ -1,5 +1,6 @@
 import { Cashout as DbCashout } from '@prisma/client';
 import { ICashoutResponse } from '@contracts/responses';
+import { TransactionType } from '@contracts/other/enums';
 
 export class Cashout {
   id: number;
@@ -19,6 +20,7 @@ export class Cashout {
       id: this.id,
       amount: this.amount,
       date: this.date,
+      type: TransactionType.CASHOUT
     };
   }
 }

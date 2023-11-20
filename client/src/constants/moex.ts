@@ -1,6 +1,8 @@
-import {StockTypes} from "@/constants/enums";
+// import {StockTypes} from "@/constants/enums";
 
-export const moexStockTypes = {
+import { MoexSecurityType } from '@contracts/responses';
+
+export const moexStockTypesRU: Record<MoexSecurityType, string> = {
   stock_index_if: 'iNAV облигаций',
   common_share: 'акция обыкновенная',
   preferred_share: 'акция привелигированная',
@@ -10,27 +12,27 @@ export const moexStockTypes = {
   futures: 'фьючерс',
   public_ppif: 'публичный ПИФ',
   exchange_ppif: 'биржевой ПИФ',
-  stock_index: 'индекс'
-}
-
-export const moexStockTypeToGeneralType = {
-  common_share: StockTypes.Share,
-  preferred_share: StockTypes.Share,
-  exchange_bond: StockTypes.Bond,
-  corporate_bond: StockTypes.Bond,
-  ofz_bond: StockTypes.Bond,
-}
-
-export const moexStockGroups = {
-  stock_bonds: 'облигации',
-  stock_shares: 'акция',
   stock_index: 'индекс',
-  stock_ppif: 'ПИФ',
-  futures_forts: 'фьючерс'
-}
+};
 
-export const moexMarkets = {
-  stock_bonds: 'bonds',
-  stock_shares: 'shares',
-  stock_index: 'index',
-}
+// export const moexStockTypeToGeneralType = {
+//   common_share: StockTypes.Share,
+//   preferred_share: StockTypes.Share,
+//   exchange_bond: StockTypes.Bond,
+//   corporate_bond: StockTypes.Bond,
+//   ofz_bond: StockTypes.Bond,
+// }
+
+// export const moexStockGroups = {
+//   stock_bonds: 'облигации',
+//   stock_shares: 'акция',
+//   stock_index: 'индекс',
+//   stock_ppif: 'ПИФ',
+//   futures_forts: 'фьючерс'
+// }
+
+// export const moexMarkets = {
+//   stock_bonds: 'bonds',
+//   stock_shares: 'shares',
+//   stock_index: 'index',
+// }

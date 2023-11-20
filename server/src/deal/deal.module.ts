@@ -7,7 +7,13 @@ import { MoexApi } from 'src/moex/moex-api.service';
 import { MoexBondRepository } from 'src/moex/moex.bond-repository';
 
 @Module({
-  providers: [DealService, DealRepository, MoexShareRepository, MoexBondRepository, MoexApi],
+  providers: [
+    DealService,
+    DealRepository,
+    MoexShareRepository,
+    MoexBondRepository,
+    MoexApi,
+  ],
   controllers: [DealController],
 })
 export class DealModule {}

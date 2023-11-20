@@ -13,6 +13,8 @@ export interface IMoexApiResponseSecurityInfo {
   };
 }
 
+export type IMoexApiCurrentPricesItem = [string, MoexBoard, number];
+
 export interface IMoexApiResponseCurrentPrices {
-  data: [string, MoexBoard, number][];
+  securities: { data: IMoexApiCurrentPricesItem[] };
 }

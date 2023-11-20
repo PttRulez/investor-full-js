@@ -1,5 +1,6 @@
 import { Deposit as DbDeposit } from '@prisma/client';
 import { IDepositResponse } from '@contracts/responses';
+import { TransactionType } from '@contracts/other/enums';
 
 export class Deposit {
   id: number;
@@ -19,6 +20,7 @@ export class Deposit {
       id: this.id,
       amount: this.amount,
       date: this.date,
+      type: TransactionType.DEPOSIT,
     };
   }
 }

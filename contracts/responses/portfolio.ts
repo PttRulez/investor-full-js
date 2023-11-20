@@ -1,10 +1,7 @@
-import { IDepositResponse } from './deposit';
 import { IDealResponse } from './deal';
-import { ICashoutResponse } from './cashout';
+import { ICashoutResponse, IDepositResponse, ITransactionResponse } from './transaction';
 import { SecurityResponse } from './security';
 
-// export type StockType = string;
-// export type IPositionsResponse = Record<string, IPositionResponse[]>;
 
 export interface IPortfolioResponse {
 	cashouts: ICashoutResponse[];
@@ -18,15 +15,22 @@ export interface IPortfolioResponse {
 	positions: IPortfolioPositionsResponse;
 	profitability: string;
 	total: number;
+	transactions: ITransactionResponse[]
 }
+
+export type IPortfolioListResponse = Pick<IPortfolioResponse,'id' | 'name' | 'compound'>;
 
 export interface IPositionResponse {
 	amount: number;
 	currentPrice: number;
-	// profitability: number;
-	// averagePrice: number;
 	security: SecurityResponse;
 	total: number;
 }
 
-export type IPortfolioPositionsResponse = { shares: Record<string, IPositionResponse>; bonds: Record<string, IPositionResponse> }
+export interface IPortfolioPositionsResponse {
+	allPositions: Array<IPositionResponse>;
+	sharePositions: Array<IPositionResponse>;
+	sharesTotal: number;
+ 	bondPositions: Array<IPositionResponse>;
+	bondsTotal: number
+}

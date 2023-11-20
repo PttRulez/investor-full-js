@@ -1,11 +1,14 @@
 import type { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import investorService from '@/axios/investor';
+import investorService from '@/axios/investor/investor.service';
 import NextAuth from 'next-auth';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { cookies } from 'next/headers';
 
-const nextAuthOptions = (req: NextApiRequest, res: NextApiResponse): NextAuthOptions => {
+const nextAuthOptions = (
+  req: NextApiRequest,
+  res: NextApiResponse,
+): NextAuthOptions => {
   return {
     pages: {
       signIn: '/login',
@@ -26,13 +29,14 @@ const nextAuthOptions = (req: NextApiRequest, res: NextApiResponse): NextAuthOpt
           },
         },
         async authorize(credentials) {
-          console.log(' async authorize(credentials)', credentials);
           if (!credentials) return null;
 
           try {
             const response = await investorService.auth.login(credentials);
 
-            const sessionIdCookie: string | undefined = (response.headers['set-cookie'] as string[])
+            const sessionIdCookie: string | undefined = (
+              response.headers['set-cookie'] as string[]
+            )
               .find(cookie => cookie.includes('connect.sid'))
               ?.match(new RegExp(`^${'connect.sid'}=(.+?);`))?.[1];
 
@@ -47,7 +51,10 @@ const nextAuthOptions = (req: NextApiRequest, res: NextApiResponse): NextAuthOpt
 
             return response.data;
           } catch (e: any) {
-            console.log('CredentialsProvider authorizer ERROR', e.response.data);
+            console.log(
+              'CredentialsProvider authorizer ERROR',
+              e.response.data,
+            );
             return null;
           }
         },

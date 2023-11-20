@@ -1,4 +1,4 @@
-import { AxiosInstance, AxiosResponse } from 'axios';
+import { AxiosInstance } from 'axios';
 import { CreatePortfolioDto, UpdatePortfolioDto } from '@contracts/dtos';
 import { IPortfolioResponse } from '@contracts/responses';
 
@@ -11,7 +11,7 @@ export default class InvestorPortfolio {
 
   allPortfolios(): Promise<IPortfolioResponse[]> {
     return this.api
-      .get('/portfolios')
+      .get('/portfolio')
       .then(res => {
         return res.data;
       })
@@ -22,7 +22,7 @@ export default class InvestorPortfolio {
 
   getPortfolio(id: string): Promise<IPortfolioResponse> {
     return this.api
-      .get(`/portfolios/${id}`)
+      .get(`/portfolio/${id}`)
       .then(res => {
         return res.data;
       })
@@ -31,7 +31,7 @@ export default class InvestorPortfolio {
 
   createPortfolio(data: CreatePortfolioDto): Promise<IPortfolioResponse> {
     return this.api
-      .post('/portfolios', data)
+      .post('/portfolio', data)
       .then(res => {
         return res.data;
       })
@@ -39,6 +39,6 @@ export default class InvestorPortfolio {
   }
 
   updatePortfolio(data: UpdatePortfolioDto) {
-    return this.api.patch(`/portfolios`, data);
+    return this.api.patch(`/portfolio`, data);
   }
 }

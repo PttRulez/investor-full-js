@@ -1,5 +1,4 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
-import { parseCookies } from 'nookies';
 import { LoginDto, RegisterDto } from '@contracts/dtos';
 import { IUserResponse } from '@contracts/responses';
 

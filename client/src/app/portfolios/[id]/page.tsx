@@ -1,23 +1,28 @@
 'use client';
 
 import { useState } from 'react';
-import investorService from '@/axios/investor';
-import DealsTable from '@/components/DealsTable';
+import investorService from '@/axios/investor/investor.service';
+import DealsTable from '@/app/portfolios/components/DealsTable';
 import PortfolioTable from '../components/PortfolioTable/PortfolioTable';
-import AddNewButton from '@/components/ui/AddNewButton';
-import { emptyDeal } from '@/constants/empties';
-import { Dialog, Tab } from '@mui/material';
-import DealForm from '../components/DealForm';
+import { Dialog, SelectChangeEvent, Tab } from '@mui/material';
+import CreateDealForm from '../components/DealForm/CreateDealForm';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
+import { PortfolioTransactionsMap } from '../components/PortfolioTable/PortfolioTableToolbar';
+import { DealType } from '@contracts/other/enums';
+import CashoutForm from '../components/TransactionForm/CashoutForm';
+import DepositForm from '../components/TransactionForm/DepositForm';
+import TransactionsTable from '../components/TransactionsTable';
 
 export default function Portfolio({ params }: { params: { id: string } }) {
-  const [dealToEdit, setDealToEdit] = useState<Deal | null>(null);
+  const [openModal, setOpenModal] = useState<PortfolioTransactionsMap | false>(
+    false,
+  );
   const [activeTab, setActiveTab] = useState<string>('portfolio');
 
   const client = useQueryClient();
   const { data: portfolio } = useQuery({
-    queryKey: ['portfolio', params.id],
+    queryKey: ['portfolio', parseInt(params.id)],
     queryFn: async () => {
       const portfolio = await investorService.portfolio.getPortfolio(params.id);
       return portfolio;
@@ -27,57 +32,86 @@ export default function Portfolio({ params }: { params: { id: string } }) {
     },
     // initialData: initPortfolio,
   });
-  console.log('portfolio', portfolio);
+
+  const chooseTransactionHandler = (e: SelectChangeEvent) => {
+    switch (e.target.value) {
+      case PortfolioTransactionsMap.buy:
+        setOpenModal(PortfolioTransactionsMap.buy);
+        break;
+      case PortfolioTransactionsMap.cashout:
+        setOpenModal(PortfolioTransactionsMap.cashout);
+        break;
+      case PortfolioTransactionsMap.deposit:
+        setOpenModal(PortfolioTransactionsMap.deposit);
+        break;
+      case PortfolioTransactionsMap.sell:
+        setOpenModal(PortfolioTransactionsMap.sell);
+        break;
+    }
+  };
+
   return (
     <>
       <TabContext value={activeTab}>
         <TabList onChange={(_, v) => setActiveTab(v)}>
           <Tab label="Портфолио" value="portfolio"></Tab>
           <Tab label="Сделки" value="deals"></Tab>
+          <Tab label="Транзакции" value="transactions"></Tab>
         </TabList>
-        <TabPanel value="portfolio">{portfolio && <PortfolioTable portfolio={portfolio} />}</TabPanel>
+        <TabPanel value="portfolio">
+          {portfolio && (
+            <PortfolioTable
+              onChooseTransaction={chooseTransactionHandler}
+              portfolio={portfolio}
+            />
+          )}
+        </TabPanel>
         <TabPanel value="deals">
-          <DealsTable deals={portfolio?.deals ?? []} />
+          {portfolio && <DealsTable deals={portfolio.deals ?? []} />}
+        </TabPanel>
+        <TabPanel value="transactions">
+          {portfolio && (
+            <TransactionsTable
+              portfolioId={portfolio.id}
+              transactions={portfolio.transactions ?? []}
+            />
+          )}
         </TabPanel>
       </TabContext>
 
-      <AddNewButton onClick={() => setDealToEdit({ ...emptyDeal, portfolioId: Number(params.id) })} />
-      <Dialog open={!!dealToEdit} onClose={() => setDealToEdit(null)}>
-        {dealToEdit && <DealForm deal={dealToEdit} afterSuccessfulSubmit={() => setDealToEdit(null)} />}
+      {/* <AddNewButton onClick={() => setCreateDeal(true)} /> */}
+
+      <Dialog open={!!openModal} onClose={() => setOpenModal(false)}>
+        {openModal &&
+          {
+            [PortfolioTransactionsMap.buy]: (
+              <CreateDealForm
+                afterSuccessfulSubmit={() => setOpenModal(false)}
+                dealType={DealType.BUY}
+                portfolioId={Number(params.id)}
+              />
+            ),
+            [PortfolioTransactionsMap.cashout]: (
+              <CashoutForm
+                afterSuccessfulSubmit={() => setOpenModal(false)}
+                portfolioId={Number(params.id)}
+              />
+            ),
+            [PortfolioTransactionsMap.deposit]: (
+              <DepositForm
+                afterSuccessfulSubmit={() => setOpenModal(false)}
+                portfolioId={Number(params.id)}
+              />
+            ),
+            [PortfolioTransactionsMap.sell]: (
+              <CreateDealForm
+                afterSuccessfulSubmit={() => setOpenModal(false)}
+                dealType={DealType.SELL}
+                portfolioId={Number(params.id)}
+              />
+            ),
+          }[openModal]}
       </Dialog>
     </>
   );
 }
-
-// export const getStaticPaths: GetStaticPaths = async () => {
-//   const res = await investorService.portfolio.allPortfolios();
-//   const paths = res.data.map((portfolio) => `/portfolios/${portfolio.id}`);
-//   return {
-//     paths,
-//     fallback: true,
-//   };
-// };
-
-// export const getStaticProps: GetStaticProps = async ({
-//   params,
-// }: GetStaticPropsContext<ParsedUrlQuery>) => {
-//   if (!params) {
-//     return {
-//       notFound: true,
-//     };
-//   }
-
-//   const res = await investorService.getPortfolio(params.id as string);
-//   if (!res.data.data) {
-//     return {
-//       notFound: true,
-//     };
-//   }
-
-//   return {
-//     props: {
-//       id: params.id,
-//       initPortfolio: res.data.data,
-//     },
-//   };
-// };

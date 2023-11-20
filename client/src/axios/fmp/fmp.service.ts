@@ -9,7 +9,7 @@ export const fmpService = {
       .then(res => {
         return res.data;
       })
-      .catch(err => console.log('fmpService.search', err));
+      .catch(err => console.log('[fmpService.search err]', err));
   },
 
   historicalDailyByTicker(ticker: string | undefined): Promise<AxiosResponse<{ symbol: string, historical: historicalDaily[]}> | void> | Promise<Awaited<{symbol: string, historical: any[]}>>{
@@ -24,8 +24,8 @@ export const fmpService = {
       .then(res => {
         return res.data;
       })
-      .catch(err => console.log('fmpService.historicalPriceByTicker', err));
-  },
+      .catch(err => console.log('[fmpService.historicalPriceByTicker err]', err));
+  }, 
 
   keyMetricsTTM(ticker) {
     return fmpApiV3

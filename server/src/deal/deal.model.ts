@@ -26,6 +26,7 @@ export class Deal {
     this.exchange = data.exchange as Exchange;
     this.portfolioId = data.portfolioId;
     this.price = Number(data.price);
+    this.secType = data.secType as SecurityType;
     this.ticker = data.ticker;
     this.type = data.type as DealType;
 
@@ -51,11 +52,13 @@ export class Deal {
   }
 
   isShare() {
-    return (this.secType = SecurityType.SHARE);
+    console.log('DEAL model this.secType === SecurityType.SHARE', this.secType, this.secType === SecurityType.SHARE);
+    return this.secType === SecurityType.SHARE;
   }
 
   isBond() {
-    return (this.secType = SecurityType.BOND);
+    console.log('DEAL model this.secType === SecurityType.BOND', this.secType, this.secType === SecurityType.BOND);
+    return this.secType === SecurityType.BOND;
   }
 
   forPrismaCreate(): DealPrismaCreateData {
@@ -65,6 +68,7 @@ export class Deal {
       exchange: this.exchange,
       portfolioId: this.portfolioId,
       price: this.price,
+      secType: this.secType,
       securityId: this.securityId,
       ticker: this.ticker,
       type: this.type,
@@ -85,6 +89,7 @@ export class Deal {
       exchange: this.exchange,
       amount: this.amount,
       price: this.price,
+      ticker: this.ticker,
       type: this.type,
       date: this.date,
       portfolioId: this.portfolioId,

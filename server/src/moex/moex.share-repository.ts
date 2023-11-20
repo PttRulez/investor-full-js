@@ -8,6 +8,7 @@ export class MoexShareRepository {
   constructor(private prisma: PrismaService) {}
 
   async create(securityData: MoexRepoCreateShare): Promise<MoexShare> {
+    console.log('[SHARE repo securityData]', securityData);
     const dbSecurity = await this.prisma.moexShare.create({
       data: securityData,
     });

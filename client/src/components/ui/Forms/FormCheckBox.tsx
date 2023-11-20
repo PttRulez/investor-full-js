@@ -3,11 +3,9 @@ import CheckboxInput, {
   CheckboxInputProps,
 } from '../NonFormInputs/CheckboxInput';
 import { Control, Controller } from 'react-hook-form';
+import { ControlledField } from '@/types/ui';
 
-interface FormCheckBoxProps extends CheckboxInputProps {
-  control: Control;
-  name: string;
-}
+interface FormCheckBoxProps extends ControlledField, CheckboxInputProps {}
 
 const FormCheckBox: FC<FormCheckBoxProps> = ({
   control,

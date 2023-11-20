@@ -10,7 +10,4 @@ export class CreatePortfolioDto {
   compound: boolean;
 }
 
-export class UpdatePortfolioDto extends PartialType(CreatePortfolioDto) {
-  @IsNumber()
-  id: number;
-}
+export class UpdatePortfolioDto extends PartialType(CreatePortfolioDto) {}

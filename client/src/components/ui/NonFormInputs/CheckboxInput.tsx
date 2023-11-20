@@ -1,5 +1,4 @@
 import { ChangeEvent, FC } from 'react';
-import { SxProp } from '../../../types/common';
 import { Checkbox, FormControlLabel } from '@mui/material';
 
 export interface CheckboxInputProps {

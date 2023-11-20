@@ -1,17 +1,19 @@
 import { Prisma } from '@prisma/client';
+import { MoexPositions } from 'src/moex/moexpositions';
 
-export type PortfolioData = {
+export type PrismaCreatePortfolioData = {
   userId: number;
   name: string;
   compound: boolean;
 };
 
-export type UpdatePortfolioData = Partial<PortfolioData> & Record<'id', number>;
-
+export type PrismaUpdatePortfolioData = Partial<PrismaCreatePortfolioData>;
 
 //Types returned from Prisma Repo
 const prismaPortfolio = Prisma.validator<Prisma.PortfolioDefaultArgs>()({});
-export type PrismaPortfolio = Prisma.PortfolioGetPayload<typeof prismaPortfolio>;
+export type PrismaPortfolio = Prisma.PortfolioGetPayload<
+  typeof prismaPortfolio
+>;
 
 const portfolioWithRelations = Prisma.validator<Prisma.PortfolioDefaultArgs>()({
   include: { deposits: true, cashouts: true, deals: true },
@@ -20,3 +22,5 @@ const portfolioWithRelations = Prisma.validator<Prisma.PortfolioDefaultArgs>()({
 export type PortfolioWithRelations = Prisma.PortfolioGetPayload<
   typeof portfolioWithRelations
 >;
+
+export type PortfolioPositions = MoexPositions;

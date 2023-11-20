@@ -5,7 +5,7 @@ import { Box, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { signIn } from 'next-auth/react';
 import { RegisterDto } from '@contracts/dtos';
-import investorService from '@/axios/investor';
+import investorService from '@/axios/investor/investor.service';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
