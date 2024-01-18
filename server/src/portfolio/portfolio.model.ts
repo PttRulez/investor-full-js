@@ -1,20 +1,27 @@
-import { PrismaPortfolio, PortfolioWithRelations, PortfolioPositions } from './types';
-import { Cashout } from '../cashout/cashout.model';
-import { Deposit } from '../deposit/deposit.model';
+import {
+  PrismaPortfolio,
+  PortfolioWithRelations,
+  PortfolioPositions,
+} from './types';
 import { Deal } from 'src/deal/deal.model';
-import { IPortfolioListResponse, IPortfolioResponse } from '@contracts/responses';
+import { IPortfolioListResponse, IPortfolioResponse } from '@contracts/index';
+import { Transaction } from 'src/transaction/transaction.model';
+import { TransactionType } from '@contracts/other/enums';
 
 export class Portfolio {
   bondsTotal: number = 0;
-  cashouts: Array<Cashout>;
+  cash: number;
+  cashoutsSum: number;
   compound: boolean;
   deals: Array<Deal>;
-  deposits: Array<Deposit>;
+  depositsSum: number;
   id: number;
   name: string;
   positions?: PortfolioPositions;
+  profitability: string;
   sharesTotal: number = 0;
   total: number = 0;
+  transactions: Array<Transaction>;
   userId: number;
 
   constructor(dbModel: PrismaPortfolio);
@@ -24,9 +31,10 @@ export class Portfolio {
     this.compound = dbModel.compound;
     this.userId = dbModel.userId;
 
-    this.deposits = 'deposits' in dbModel ? dbModel.deposits.map(d => new Deposit(d)) : [];
-
-    this.cashouts = 'cashouts' in dbModel ? dbModel.cashouts.map(c => new Cashout(c)) : [];
+    this.transactions =
+      'transactions' in dbModel
+        ? dbModel.transactions.map(d => new Transaction(d))
+        : [];
 
     this.deals = 'deals' in dbModel ? dbModel.deals.map(d => new Deal(d)) : [];
   }
@@ -35,21 +43,42 @@ export class Portfolio {
     return userId === this.userId;
   }
 
-  setResults(result: { positions: PortfolioPositions; total: number }): void {
-    this.positions = result.positions;
-    this.total = result.total;
+  loadPositions(positions: PortfolioPositions): void {
+    this.positions = positions;
+    this.total = positions.bondsTotal + positions.sharesTotal;
+
+    this.cashoutsSum = this.sumCashouts();
+    this.depositsSum = this.sumDeposits();
+
+    this.cash =
+      this.depositsSum -
+      this.cashoutsSum +
+      positions.bonds
+        .concat(positions.shares)
+        .reduce((total, cur) => total + cur.tradeSaldo, 0);
+
+    this.profitability =
+      (this.depositsSum
+        ? ((this.total + this.cash + this.cashoutsSum) / this.depositsSum - 1) *
+          100
+        : 0
+      ).toFixed(1) + '%';
   }
 
   sumCashouts(): number {
-    return this.cashouts.reduce<number>((prev, cur) => {
-      return prev + cur.amount;
-    }, 0);
+    return this.transactions
+      .filter(tr => tr.type === TransactionType.CASHOUT)
+      .reduce<number>((prev, cur) => {
+        return prev + cur.amount;
+      }, 0);
   }
 
   sumDeposits(): number {
-    return this.deposits.reduce<number>((prev, cur) => {
-      return prev + cur.amount;
-    }, 0);
+    return this.transactions
+      .filter(tr => tr.type === TransactionType.DEPOSIT)
+      .reduce<number>((prev, cur) => {
+        return prev + cur.amount;
+      }, 0);
   }
 
   toListJSON(): IPortfolioListResponse {
@@ -61,27 +90,31 @@ export class Portfolio {
   }
 
   toJSON(): IPortfolioResponse {
-    const cashoutsSum = this.sumCashouts();
-    const depositsSum = this.sumDeposits();
-    const profitability = (depositsSum ? ((this.total + cashoutsSum) / depositsSum - 1) * 100 : 0).toFixed(1) + '%';
+    const positions = this.positions
+      ? this.positions.toJSON()
+      : {
+          allPositions: [],
+          tradeSaldo: 0,
+          sharePositions: [],
+          bondPositions: [],
+          sharesTotal: 0,
+          bondsTotal: 0,
+        };
 
     return {
-      cashouts: this.cashouts.map(c => c.toJSON()),
-      cashoutsSum,
+      cash: this.cash,
+      cashoutsSum: this.cashoutsSum,
       compound: this.compound,
       deals: this.deals.map(d => d.toJSON()),
-      deposits: this.deposits.map(d => d.toJSON()),
-      depositsSum,
+      depositsSum: this.depositsSum,
       id: this.id,
       name: this.name,
-      positions: this.positions
-        ? this.positions.toJSON()
-        : { allPositions: [], sharePositions: [], bondPositions: [], sharesTotal: 0, bondsTotal: 0 },
+      positions,
       total: this.total,
-      transactions: [...this.cashouts, ...this.deposits]
+      transactions: this.transactions
         .sort((a, b) => (a.date > b.date ? 1 : -1))
         .map(t => t.toJSON()),
-      profitability,
+      profitability: this.profitability,
     };
   }
 }

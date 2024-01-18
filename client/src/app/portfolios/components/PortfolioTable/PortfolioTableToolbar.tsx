@@ -1,24 +1,17 @@
-import SelectInput, {
-  SelectProps,
-} from '@/components/ui/NonFormInputs/SelectInput';
-import { DealType } from '@contracts/other/enums';
-import { IPositionResponse } from '@contracts/responses';
+import SelectInput from '@/components/ui/NonFormInputs/SelectInput';
 import { SelectChangeEvent } from '@mui/material';
-import { MRT_TableInstance } from 'material-react-table';
 
 type Props = {
   onChooseTransaction: (e: SelectChangeEvent) => void;
-  table: MRT_TableInstance<IPositionResponse>;
 };
 
-export enum PortfolioTransactionsMap {
+export enum PortfolioActionsMap {
   buy = 'buy',
-  cashout = 'cashout',
-  deposit = 'deposit',
-  sell = 'cassellhout',
+  transaction = 'transaction',
+  sell = 'sell',
 }
 
-const PortfolioTableToolbar = ({ onChooseTransaction, table }: Props) => {
+const PortfolioTableToolbar = ({ onChooseTransaction }: Props) => {
   return (
     <>
       <SelectInput
@@ -28,11 +21,11 @@ const PortfolioTableToolbar = ({ onChooseTransaction, table }: Props) => {
         onChange={onChooseTransaction}
         label={'Добавить'}
         options={[
-          { id: PortfolioTransactionsMap.buy, name: 'Покупка' },
-          { id: PortfolioTransactionsMap.sell, name: 'Продажа' },
-          { id: PortfolioTransactionsMap.deposit, name: 'Депозит' },
-          { id: PortfolioTransactionsMap.cashout, name: 'Кэшаут' },
+          { id: PortfolioActionsMap.buy, name: 'BUY' },
+          { id: PortfolioActionsMap.sell, name: 'SELL' },
+          { id: PortfolioActionsMap.transaction, name: 'Депозит/Кэшаут' },
         ]}
+        value={null}
       />
     </>
   );

@@ -4,7 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { Box, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { signIn } from 'next-auth/react';
-import { LoginDto } from '@contracts/dtos';
+import { LoginDto } from '@contracts/index';
 import { useRouter } from 'next/navigation';
 
 const Login: FC = () => {
@@ -14,7 +14,11 @@ const Login: FC = () => {
 
   const onSubmit: SubmitHandler<LoginDto> = async data => {
     setLoading(true);
-    const loginData = await signIn('credentials', { email: data.email, password: data.password, redirect: false });
+    const loginData = await signIn('credentials', {
+      email: data.email,
+      password: data.password,
+      redirect: false,
+    });
     console.log('loginData', loginData);
     setLoading(false);
     if (loginData?.ok) {
@@ -48,8 +52,18 @@ const Login: FC = () => {
         }}
       >
         <TextField label="Логин" variant="standard" {...register('email')} />
-        <TextField label="Пароль" variant="standard" type="password" {...register('password')} />
-        <LoadingButton variant="outlined" color="inherit" type="submit" loading={loading}>
+        <TextField
+          label="Пароль"
+          variant="standard"
+          type="password"
+          {...register('password')}
+        />
+        <LoadingButton
+          variant="outlined"
+          color="inherit"
+          type="submit"
+          loading={loading}
+        >
           Логин
         </LoadingButton>
       </Box>

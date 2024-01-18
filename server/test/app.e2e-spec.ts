@@ -2,14 +2,14 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
-import { LoginDto, RegisterDto } from '@contracts/dtos';
+import { LoginDto, RegisterDto } from '@contracts/index';
 import * as session from 'express-session';
 import * as cookieParser from 'cookie-parser';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { firstUserStub } from './stubs';
-import { Exchange, Role } from '@contracts/other/enums';
-import { IDealResponse } from '@contracts/responses';
+import { Role } from '@contracts/other/enums';
+import { IDealResponse } from '@contracts/index';
 
 const firstUser = firstUserStub();
 
@@ -216,7 +216,7 @@ describe('APP E2E', () => {
         .expect(201)
         .expect(({ body }) => {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { secType, ...dto } =
+          const { securityType, ...dto } =
             firstUser.portfolios[0].deals[0].createDto;
           const expectedResponse: Omit<
             IDealResponse,

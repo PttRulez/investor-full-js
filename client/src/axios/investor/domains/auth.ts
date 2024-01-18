@@ -1,8 +1,7 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
-import { LoginDto, RegisterDto } from '@contracts/dtos';
-import { IUserResponse } from '@contracts/responses';
+import { LoginDto, RegisterDto, IUserResponse } from '@contracts/index';
 
-export default class InvestorAuth {
+export class InvestorAuth {
   private readonly api: AxiosInstance;
 
   constructor(api: AxiosInstance) {

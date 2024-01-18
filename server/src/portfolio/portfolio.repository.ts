@@ -11,8 +11,7 @@ export class PortfolioRepository {
     const newPortfolio = await this.prisma.portfolio.create({
       data: { ...portfolioData },
       include: {
-        deposits: true,
-        cashouts: true,
+        transactions: true,
       },
     });
 
@@ -23,8 +22,7 @@ export class PortfolioRepository {
     const foundPortfolio = await this.prisma.portfolio.findUnique({
       where: { id: portfolioId },
       include: {
-        deposits: true,
-        cashouts: true,
+        transactions: true,
         deals: true,
       },
     });
@@ -40,8 +38,7 @@ export class PortfolioRepository {
         userId,
       },
       include: {
-        deposits: true,
-        cashouts: true,
+        transactions: true,
         // deals: true,
       },
     });
@@ -69,8 +66,7 @@ export class PortfolioRepository {
         ...portfolioData,
       },
       include: {
-        deposits: true,
-        cashouts: true,
+        transactions: true,
       },
     });
 

@@ -1,6 +1,6 @@
-import { MoexBoard, MoexEngine, MoexMarket } from '@contracts/responses/moex-securities';
+import { MoexBoard, MoexEngine, MoexMarket } from '@contracts/index';
 
-export type MoexRepoCreateShare = {
+type MoexRepoCreateSecurity = {
   ticker: string;
   name: string;
   shortName: string;
@@ -9,11 +9,8 @@ export type MoexRepoCreateShare = {
   market: MoexMarket;
 };
 
-export type MoexRepoCreateBond = {
-  ticker: string;
-  name: string;
-  shortName: string;
-  engine: MoexEngine;
-  board: MoexBoard;
-  market: MoexMarket;
-};
+export type MoexRepoCreateShare = MoexRepoCreateSecurity;
+
+export type MoexRepoCreateBond = MoexRepoCreateSecurity;
+
+export type MoexRepoCreateCurrency = MoexRepoCreateSecurity;

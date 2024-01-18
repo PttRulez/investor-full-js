@@ -1,7 +1,6 @@
 import { Controller, FieldValues } from 'react-hook-form';
 import TextInput, { TextInputProps } from '../NonFormInputs/TextInput';
 import { ControlledField } from '@/types/ui';
-import { useEffect } from 'react';
 
 type FormTextInputProps<T extends FieldValues> = ControlledField<T> &
   TextInputProps;

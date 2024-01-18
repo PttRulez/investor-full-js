@@ -1,21 +1,35 @@
 import investorAxiosInstance from './config';
-import InvestorAuth from './domains/auth';
-import InvestorPortfolio from './domains/portfolio';
-import InvestorDeal from './domains/deal';
-import InvestorTransaction from './domains/transaction';
+import { InvestorExpert } from './domains/expert';
+import {
+  InvestorAuth,
+  InvestorDeal,
+  InvestorMoexBond,
+  InvestorMoexShare,
+  InvestorOpinion,
+  InvestorPortfolio,
+  InvestorTransaction,
+} from './domains/index';
 
 class InvestorService {
   private static instance: InvestorService;
   private readonly investorApi = investorAxiosInstance;
 
   public auth: InvestorAuth;
-  public portfolio: InvestorPortfolio;
   public deal: InvestorDeal;
+  public expert: InvestorExpert;
+  public opinion: InvestorOpinion;
+  public portfolio: InvestorPortfolio;
+  public moexBond: InvestorMoexBond;
+  public moexShare: InvestorMoexShare;
   public transaction: InvestorTransaction;
 
   constructor() {
     this.auth = new InvestorAuth(this.investorApi);
     this.deal = new InvestorDeal(this.investorApi);
+    this.expert = new InvestorExpert(this.investorApi);
+    this.moexBond = new InvestorMoexBond(this.investorApi);
+    this.moexShare = new InvestorMoexShare(this.investorApi);
+    this.opinion = new InvestorOpinion(this.investorApi);
     this.portfolio = new InvestorPortfolio(this.investorApi);
     this.transaction = new InvestorTransaction(this.investorApi);
   }

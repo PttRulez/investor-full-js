@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { DealType, Exchange, SecurityType } from '@contracts/other/enums';
-import { CreateDealDto } from '@contracts/dtos';
+import { CreateDealDto } from '@contracts/index';
 import { zodSchemaForType } from '@/utils/zod';
 
 export const DealSchema = zodSchemaForType<CreateDealDto>()(

@@ -1,8 +1,8 @@
 import { AxiosInstance } from 'axios';
-import { CreatePortfolioDto, UpdatePortfolioDto } from '@contracts/dtos';
-import { IPortfolioResponse } from '@contracts/responses';
+import { CreatePortfolioDto, UpdatePortfolioDto } from '@contracts/index';
+import { IPortfolioResponse } from '@contracts/index';
 
-export default class InvestorPortfolio {
+export class InvestorPortfolio {
   private readonly api: AxiosInstance;
 
   constructor(api: AxiosInstance) {

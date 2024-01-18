@@ -6,7 +6,7 @@ import {
   useMaterialReactTable,
 } from 'material-react-table';
 import PortfolioTableFooter from './PortfolioTableFooter';
-import { IPortfolioResponse, IPositionResponse } from '@contracts/responses';
+import { IPortfolioResponse, IPositionResponse } from '@contracts/index';
 import { getDefaultMRTOptions } from '@/utils/mrt-default-options';
 import { SecurityType } from '@contracts/other/enums';
 import PortfolioTableToolbar from './PortfolioTableToolbar';
@@ -80,8 +80,9 @@ const PortfolioTable = ({
     // enableToolbarInternalActions: false,
     renderToolbarInternalActions: props => (
       <PortfolioTableToolbar
-        onChooseTransaction={onChooseTransaction}
-        table={props.table}
+        onChooseTransaction={e => {
+          onChooseTransaction(e);
+        }}
       />
     ),
     icons: { SortIcon: <></> },

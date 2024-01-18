@@ -1,13 +1,15 @@
 import {
-  CreateCashoutDto,
+  DealType,
+  Exchange,
+  SecurityType,
+  TransactionType,
   CreateDealDto,
-  CreateDepositDto,
+  CreateTransactionDto,
   CreatePortfolioDto,
   LoginDto,
   RegisterDto,
   UpdatePortfolioDto,
-} from '@contracts/dtos';
-import { DealType, Exchange, SecurityType } from '@contracts/other/enums';
+} from '@contracts/index';
 
 export const firstUserStub = (): UserStub => ({
   loginDto: {
@@ -36,6 +38,7 @@ export const firstUserStub = (): UserStub => ({
                 0,
               ),
             ),
+            type: TransactionType.CASHOUT,
           },
           id: null,
         },
@@ -52,6 +55,7 @@ export const firstUserStub = (): UserStub => ({
                 0,
               ),
             ),
+            type: TransactionType.DEPOSIT,
           },
           id: null,
         },
@@ -70,7 +74,7 @@ export const firstUserStub = (): UserStub => ({
             ),
             exchange: Exchange.MOEX,
             price: 221.5,
-            secType: SecurityType.SHARE,
+            securityType: SecurityType.SHARE,
             ticker: 'SBERP',
             type: DealType.BUY,
           },
@@ -96,6 +100,7 @@ export const firstUserStub = (): UserStub => ({
                 0,
               ),
             ),
+            type: TransactionType.CASHOUT,
           },
           id: null,
         },
@@ -112,6 +117,7 @@ export const firstUserStub = (): UserStub => ({
                 0,
               ),
             ),
+            type: TransactionType.DEPOSIT,
           },
           id: null,
         },
@@ -130,7 +136,7 @@ export const firstUserStub = (): UserStub => ({
             ),
             exchange: Exchange.MOEX,
             price: 119.3,
-            secType: SecurityType.SHARE,
+            securityType: SecurityType.SHARE,
             ticker: 'FLOT',
             type: DealType.BUY,
           },
@@ -150,7 +156,7 @@ interface UserStub {
   loginDto: LoginDto;
   portfolios: {
     cashouts: {
-      createDto: Omit<CreateCashoutDto, 'portfolioId'>;
+      createDto: Omit<CreateTransactionDto, 'portfolioId'>;
       id: number | null;
     }[];
     createDto: CreatePortfolioDto;
@@ -159,7 +165,7 @@ interface UserStub {
       id: null | number;
     }[];
     deposits: {
-      createDto: Omit<CreateDepositDto, 'portfolioId'>;
+      createDto: Omit<CreateTransactionDto, 'portfolioId'>;
       id: number | null;
     }[];
     id: null | number;

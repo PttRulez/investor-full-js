@@ -1,8 +1,7 @@
-import { CreateDealDto, UpdateDealDto } from '@contracts/dtos';
-import { IDealResponse } from '@contracts/responses';
+import { CreateDealDto, IDealResponse, UpdateDealDto } from '@contracts/index';
 import { AxiosInstance } from 'axios';
 
-export default class InvestorDeal {
+export class InvestorDeal {
   private readonly api: AxiosInstance;
 
   constructor(api: AxiosInstance) {

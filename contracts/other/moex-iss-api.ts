@@ -1,6 +1,6 @@
-import { MoexBoard, MoexSecurityGroup, MoexSecurityType } from '../responses';
+import { MoexBoard, MoexSecurityGroup, MoexSecurityType } from '..';
 
-export interface IMoexSearchResults {
+export interface IMoexISSSearchResults {
   securities: {
     columns: [
       'id',                   // 0
@@ -40,4 +40,25 @@ export interface IMoexSearchResults {
       MoexBoard,
     ][];
   };
+}
+
+export interface IMoexISSPricesHistory {
+  history: {
+    columns: [
+      'SHORTNAME',  // 0
+      'OPEN',       // 1
+      'HIGH',       // 2
+      'LOW',        // 3
+      'CLOSE',      // 4
+      'TRADEDATE'   // 5
+    ],
+    data: [
+      string,   // SHORTNAME
+      number,   // OPEN
+      number,   // HIGH
+      number,   // LOW
+      number,   // CLOSE
+      string    // TRADEDATE
+    ][]
+  }
 }

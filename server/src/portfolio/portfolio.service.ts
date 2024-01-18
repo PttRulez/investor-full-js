@@ -4,16 +4,22 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { PortfolioRepository } from './portfolio.repository';
-import { IPortfolioResponse } from '@contracts/responses';
+import { Exchange, IPortfolioResponse, SecurityType } from '@contracts/index';
 import { PrismaCreatePortfolioData, PrismaUpdatePortfolioData } from './types';
 import { Portfolio } from './portfolio.model';
-import { MoexService } from 'src/moex/moex.service';
+import { MoexPositions } from 'src/position/moexpositions';
+import { Deal } from 'src/deal/deal.model';
+import { MoexBondService } from 'src/moex/bonds/bond.service';
+import { MoexShareService } from 'src/moex/shares/share.service';
+import { MoexApi } from 'src/moex/iss-api/moex-api.service';
 
 @Injectable()
 export class PortfolioService {
   constructor(
     private portfolioRepository: PortfolioRepository,
-    private moexService: MoexService,
+    private readonly moexBondsService?: MoexBondService,
+    private moexSharesService?: MoexShareService,
+    private moexApi?: MoexApi,
   ) {}
 
   create(portfolioData: PrismaCreatePortfolioData): Promise<Portfolio> {
@@ -36,10 +42,9 @@ export class PortfolioService {
     if (!portfolio.belongsToUser(userId))
       throw new UnauthorizedException('Not your portfolio :(');
 
-    const moexResults =
-      await this.moexService.getMoexPortfolioresults(portfolio);
+    const moexPositions = await this.getMoexPositions(portfolio);
 
-    portfolio.setResults(moexResults);
+    portfolio.loadPositions(moexPositions);
 
     return portfolio.toJSON();
   }
@@ -68,5 +73,37 @@ export class PortfolioService {
       throw new UnauthorizedException('Not your portfolio :(');
 
     return this.portfolioRepository.remove(portfolioId);
+  }
+
+  // ---------------- UTILS, CALCULATIONS etc. ----------------
+
+  async getMoexPositions(model: Portfolio): Promise<MoexPositions> {
+    //): Promise<{ positions: MoexPositions; total: number }> {
+    // just resructuring Deal models in two arrays of bonds and shares
+    const moexDeals: { bonds: Deal[]; shares: Deal[] } = model.deals
+      .filter(d => d.exchange === Exchange.MOEX)
+      .reduce(
+        (acc: { bonds: Deal[]; shares: Deal[] }, deal: Deal) => {
+          if (deal.securityType === SecurityType.BOND) {
+            acc.bonds.push(deal);
+          } else {
+            acc.shares.push(deal);
+          }
+          return acc;
+        },
+        { bonds: [], shares: [] },
+      );
+
+    // empty result
+    const positions: MoexPositions = new MoexPositions(
+      moexDeals,
+      this.moexApi,
+      this.moexBondsService,
+      this.moexSharesService,
+    );
+    await positions.calculatePositions();
+
+    const total = positions.bondsTotal + positions.sharesTotal;
+    return positions;
   }
 }

@@ -11,12 +11,13 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { PortfolioService } from './portfolio.service';
-import { CreatePortfolioDto, UpdatePortfolioDto } from '@contracts/dtos';
 import { GetUserId } from '../auth/decorators';
 import {
   IPortfolioResponse,
   IPortfolioListResponse,
-} from '@contracts/responses';
+  CreatePortfolioDto,
+  UpdatePortfolioDto,
+} from '@contracts/index';
 
 @Controller('portfolio')
 export class PortfolioController {

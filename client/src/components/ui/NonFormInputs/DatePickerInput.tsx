@@ -60,6 +60,7 @@ const DatePickerInput = ({
             }}
           />
         )}
+        sx={{ width: '100%', ...otherProps.sx }}
         {...otherProps}
       />
     </LocalizationProvider>

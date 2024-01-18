@@ -1,14 +1,13 @@
 import { IDealResponse } from './deal';
-import { ICashoutResponse, IDepositResponse, ITransactionResponse } from './transaction';
+import { ITransactionResponse } from './transaction';
 import { SecurityResponse } from './security';
 
 
 export interface IPortfolioResponse {
-	cashouts: ICashoutResponse[];
+	cash: number;
 	cashoutsSum: number;
 	compound: boolean;
 	deals: IDealResponse[];
-	deposits: IDepositResponse[];
 	depositsSum: number;
 	id: number;
 	name: string;
@@ -23,14 +22,16 @@ export type IPortfolioListResponse = Pick<IPortfolioResponse,'id' | 'name' | 'co
 export interface IPositionResponse {
 	amount: number;
 	currentPrice: number;
+	tradeSaldo?: number;
 	security: SecurityResponse;
 	total: number;
 }
 
 export interface IPortfolioPositionsResponse {
 	allPositions: Array<IPositionResponse>;
+	bondPositions: Array<IPositionResponse>;
+ 	bondsTotal: number
+	// tradeSaldo?: number;
 	sharePositions: Array<IPositionResponse>;
 	sharesTotal: number;
- 	bondPositions: Array<IPositionResponse>;
-	bondsTotal: number
 }

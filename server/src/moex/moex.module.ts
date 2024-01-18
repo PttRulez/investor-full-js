@@ -1,11 +1,14 @@
 import { Module } from '@nestjs/common';
-import { MoexApi } from './moex-api.service';
+import { MoexApi } from './iss-api/moex-api.service';
 import { MoexService } from './moex.service';
-import { MoexBondRepository } from './moex.bond-repository';
-import { MoexShareRepository } from './moex.share-repository';
+import { MoexBondService } from './bonds/bond.service';
+import { MoexShareService } from './shares/share.service';
+import { BondsController } from './bonds/bonds.controller';
+import { SharesController } from './shares/shares.controller';
 
 @Module({
-  providers: [MoexApi, MoexService, MoexBondRepository, MoexShareRepository],
-  exports: [MoexApi, MoexBondRepository, MoexShareRepository],
+  providers: [MoexApi, MoexService, MoexBondService, MoexShareService],
+  exports: [MoexApi, MoexBondService, MoexShareService],
+  controllers: [BondsController, SharesController],
 })
 export class MoexModule {}

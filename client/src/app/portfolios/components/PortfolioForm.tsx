@@ -5,7 +5,7 @@ import FormText from '@/components/ui/Forms/FormText';
 import FormCheckBox from '@/components/ui/Forms/FormCheckBox';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import investorService from '@/axios/investor/investor.service';
-import { CreatePortfolioDto, UpdatePortfolioDto } from '@contracts/dtos';
+import { CreatePortfolioDto, UpdatePortfolioDto } from '@contracts/index';
 
 interface PortfolioFormProps {
   portfolio: CreatePortfolioDto | UpdatePortfolioDto;

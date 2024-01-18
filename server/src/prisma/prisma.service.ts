@@ -9,8 +9,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
 
   async cleandDb() {
     return this.$transaction([
-      this.cashout.deleteMany(),
-      this.deposit.deleteMany(),
+      this.transaction.deleteMany(),
       this.deal.deleteMany(),
       this.portfolio.deleteMany(),
       this.moexBond.deleteMany(),

@@ -8,9 +8,9 @@ export type TextInputProps = TextFieldProps & {
 };
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
-  // '& .MuiInput-root': {
-  //   minHeight: '40px',
-  // },
+  '&.MuiFormControl-root.MuiTextField-root': {
+    width: '100% !important',
+  },
   '& .MuiInputBase-root.MuiInput-root': {
     paddingLeft: '20px',
     paddingRight: '20px',
@@ -27,8 +27,6 @@ const TextInput = ({
   ...otherProps
 }: TextInputProps) => {
   return (
-    // <FormControl fullWidth>
-    //   <InputLabel id={label}>{label}</InputLabel>
     <StyledTextField
       InputProps={{
         endAdornment: value ? (
@@ -40,12 +38,11 @@ const TextInput = ({
         ),
       }}
       label={<span style={{ marginLeft: '15px' }}>{label}</span>}
-      type={type}
+      type={type ?? 'text'}
       value={value}
       variant={variant}
       {...otherProps}
     />
-    // </FormControl>
   );
 };
 

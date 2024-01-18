@@ -1,6 +1,6 @@
 import { DealType, Exchange, SecurityType } from '../other/enums';
 import { PartialType } from '@nestjs/mapped-types';
-import { IsBoolean, IsDateString, IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsDateString, IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateDealDto {
   @IsNumber()
@@ -22,7 +22,7 @@ export class CreateDealDto {
   price: number;
   
   @IsEnum(SecurityType)
-  secType: SecurityType
+  securityType: SecurityType
   
   @IsString()
   @IsNotEmpty()

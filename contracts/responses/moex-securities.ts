@@ -1,36 +1,5 @@
-import { SecurityType } from '../other/enums';
+import { MoexBoard, MoexEngine, MoexMarket, SecurityType } from '../other/enums';
 
-export enum MoexEngine {
-  stock = 'stock',
-  currency = 'currency'
-}
-
-export enum MoexMarket {
-  shares = 'shares',
-  bonds = 'bonds',
-  index = 'index'
-}
-
-export enum MoexBoard {
-  TQBR = 'TQBR',												// Т+: Акции и ДР - безадрес.
-}
-
-export enum MoexSecurityType {
-  common_share = 'common_share', 				// 'акция обыкновенная'
-  preferred_share = 'preferred_share', 	// 'акция привелигированная'
-  
-	corporate_bond = 'corporate_bond',		// 'корпоративная облигация'
-  exchange_bond = 'exchange_bond', 			// 'облигация'
-  ofz_bond = 'ofz_bond',								// 'ОФЗ'
-
-  exchange_ppif = 'exchange_ppif', 			// 'биржевой ПИФ'
-  public_ppif = 'public_ppif', 					// 'публичный ПИФ'
-  stock_index_if = 'stock_index_if', 		// 'iNAV облигаций'
-
-  futures = 'futures', 									// 'фьючерс'
-
-  stock_index = 'stock_index',					// 'индекс'
-}
 
 export enum MoexSecurityGroup {
  	stock_index = 'stock_index',	                  // Индексы	
@@ -63,3 +32,6 @@ export interface IMoexSecurtiyResponse {
   securityType: SecurityType;
 	ticker: string;
 }
+
+export type IMoexShareResponse = IMoexSecurtiyResponse
+export type IMoexBondResponse = IMoexSecurtiyResponse

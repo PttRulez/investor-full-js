@@ -1,8 +1,14 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Session } from '@nestjs/common';
-import { RegisterDto, LoginDto } from '@contracts/dtos';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Session,
+} from '@nestjs/common';
+import { RegisterDto, LoginDto, IUserResponse } from '@contracts/index';
 import { AuthService } from './auth.service';
 import { UserSession } from './types';
-import { IUserResponse } from '@contracts/responses';
 import { PublicRoute } from './decorators';
 import { Role } from '@contracts/other/enums';
 
@@ -25,7 +31,10 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  async login(@Body() loginDto: LoginDto, @Session() session: UserSession): Promise<IUserResponse> {
+  async login(
+    @Body() loginDto: LoginDto,
+    @Session() session: UserSession,
+  ): Promise<IUserResponse> {
     const user = await this.authService.login({
       email: loginDto.email,
       password: loginDto.password,
@@ -36,7 +45,12 @@ export class AuthController {
     return user;
   }
 
-  private serializeSession(id: number, email: string, role: Role, session: UserSession) {
+  private serializeSession(
+    id: number,
+    email: string,
+    role: Role,
+    session: UserSession,
+  ) {
     session.user = { id, email, role };
   }
 }

@@ -8,14 +8,13 @@ import { Dialog, SelectChangeEvent, Tab } from '@mui/material';
 import CreateDealForm from '../components/DealForm/CreateDealForm';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import { PortfolioTransactionsMap } from '../components/PortfolioTable/PortfolioTableToolbar';
+import { PortfolioActionsMap } from '../components/PortfolioTable/PortfolioTableToolbar';
 import { DealType } from '@contracts/other/enums';
-import CashoutForm from '../components/TransactionForm/CashoutForm';
-import DepositForm from '../components/TransactionForm/DepositForm';
+import TransactionForm from '../components/TransactionForm/TransactionForm';
 import TransactionsTable from '../components/TransactionsTable';
 
 export default function Portfolio({ params }: { params: { id: string } }) {
-  const [openModal, setOpenModal] = useState<PortfolioTransactionsMap | false>(
+  const [openModal, setOpenModal] = useState<PortfolioActionsMap | false>(
     false,
   );
   const [activeTab, setActiveTab] = useState<string>('portfolio');
@@ -35,17 +34,14 @@ export default function Portfolio({ params }: { params: { id: string } }) {
 
   const chooseTransactionHandler = (e: SelectChangeEvent) => {
     switch (e.target.value) {
-      case PortfolioTransactionsMap.buy:
-        setOpenModal(PortfolioTransactionsMap.buy);
+      case PortfolioActionsMap.buy:
+        setOpenModal(PortfolioActionsMap.buy);
         break;
-      case PortfolioTransactionsMap.cashout:
-        setOpenModal(PortfolioTransactionsMap.cashout);
+      case PortfolioActionsMap.transaction:
+        setOpenModal(PortfolioActionsMap.transaction);
         break;
-      case PortfolioTransactionsMap.deposit:
-        setOpenModal(PortfolioTransactionsMap.deposit);
-        break;
-      case PortfolioTransactionsMap.sell:
-        setOpenModal(PortfolioTransactionsMap.sell);
+      case PortfolioActionsMap.sell:
+        setOpenModal(PortfolioActionsMap.sell);
         break;
     }
   };
@@ -84,26 +80,20 @@ export default function Portfolio({ params }: { params: { id: string } }) {
       <Dialog open={!!openModal} onClose={() => setOpenModal(false)}>
         {openModal &&
           {
-            [PortfolioTransactionsMap.buy]: (
+            [PortfolioActionsMap.buy]: (
               <CreateDealForm
                 afterSuccessfulSubmit={() => setOpenModal(false)}
                 dealType={DealType.BUY}
                 portfolioId={Number(params.id)}
               />
             ),
-            [PortfolioTransactionsMap.cashout]: (
-              <CashoutForm
+            [PortfolioActionsMap.transaction]: (
+              <TransactionForm
                 afterSuccessfulSubmit={() => setOpenModal(false)}
                 portfolioId={Number(params.id)}
               />
             ),
-            [PortfolioTransactionsMap.deposit]: (
-              <DepositForm
-                afterSuccessfulSubmit={() => setOpenModal(false)}
-                portfolioId={Number(params.id)}
-              />
-            ),
-            [PortfolioTransactionsMap.sell]: (
+            [PortfolioActionsMap.sell]: (
               <CreateDealForm
                 afterSuccessfulSubmit={() => setOpenModal(false)}
                 dealType={DealType.SELL}

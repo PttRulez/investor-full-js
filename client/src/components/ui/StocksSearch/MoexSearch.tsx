@@ -12,7 +12,7 @@ import { Box, Typography } from '@mui/material';
 import { moexStockTypesRU } from '@/constants/moex';
 import { MoexSearchAutocompleteOption, MoexSearchHandler } from './types';
 import { AxiosError } from 'axios';
-import { IMoexSearchResults } from '@contracts/other/moex-iss-api';
+import { IMoexISSSearchResults } from '@contracts/other/moex-iss-api';
 
 type MoexSearchProps = Omit<
   AutocompleteProps<MoexSearchAutocompleteOption, false, false, false>,
@@ -29,7 +29,7 @@ const MoexSearch = ({
   const debouncedValue = useDebounce<string>(submittedTicker, 500);
 
   const { data: stocksOptions, refetch } = useQuery<
-    IMoexSearchResults,
+    IMoexISSSearchResults,
     AxiosError,
     MoexSearchAutocompleteOption[],
     [string, string]

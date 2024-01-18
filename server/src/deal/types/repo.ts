@@ -8,7 +8,7 @@ export type DealPrismaCreateData = {
   exchange: Exchange;
   portfolioId: number;
   price: number;
-  secType: SecurityType;
+  securityType: SecurityType;
   securityId: number;
   ticker: string;
   type: DealType;

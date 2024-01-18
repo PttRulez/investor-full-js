@@ -1,8 +1,9 @@
 import { zodSchemaForType } from '@/utils/zod';
-import { CreateCashoutDto, CreateDepositDto } from '@contracts/dtos';
+import { CreateTransactionDto } from '@contracts/index';
+import { TransactionType } from '@contracts/other/enums';
 import { z } from 'zod';
 
-export const CashoutSchema = zodSchemaForType<CreateCashoutDto>()(
+export const TransactionSchema = zodSchemaForType<CreateTransactionDto>()(
   z.object({
     amount: z
       .number({
@@ -12,25 +13,10 @@ export const CashoutSchema = zodSchemaForType<CreateCashoutDto>()(
       })
       .int()
       .positive(),
-    portfolioId: z.number(),
     date: z.date(),
+    portfolioId: z.number(),
+    type: z.nativeEnum(TransactionType),
   }),
 );
 
-export const DepositSchema = zodSchemaForType<CreateDepositDto>()(
-  z.object({
-    amount: z
-      .number({
-        errorMap: issue => ({
-          message: 'Введите сумму депозита',
-        }),
-      })
-      .int()
-      .positive(),
-    portfolioId: z.number(),
-    date: z.date(),
-  }),
-);
-
-export type CashoutSchemaType = z.infer<typeof CashoutSchema>;
-export type DepositSchemaType = z.infer<typeof DepositSchema>;
+export type TransactionSchemaType = z.infer<typeof TransactionSchema>;

@@ -1,4 +1,5 @@
-// const path = require('node:path');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const path = require('node:path');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -6,15 +7,15 @@ const nextConfig = {
     serverActions: true,
     externalDir: true,
   },
-  // webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
-  //   // Define the root directory where your external files are located
-  //   const externalDir = path.join(__dirname, '../contracts');
+  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    // Define the root directory where your external files are located
+    const externalDir = path.join(__dirname, '../contracts');
 
-  //   // Set up an alias to load files from the external directory
-  //   config.resolve.alias['@contracts'] = externalDir;
+    // Set up an alias to load files from the external directory
+    config.resolve.alias['@contracts'] = externalDir;
 
-  //   return config;
-  // },
+    return config;
+  },
 };
 
 module.exports = nextConfig;

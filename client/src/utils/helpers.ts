@@ -1,5 +1,4 @@
-import { SecurityType } from '@contracts/other/enums';
-import { MoexSecurityType } from '@contracts/responses';
+import { MoexSecurityType, SecurityType } from '@contracts/index';
 
 const map = {
   [MoexSecurityType.common_share]: SecurityType.SHARE,

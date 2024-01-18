@@ -15,7 +15,7 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import { redirect, useRouter } from 'next/navigation';
 import Head from 'next/head';
 import { useSession } from 'next-auth/react';
-import { IPortfolioResponse as Portfolio } from '@contracts/responses';
+import { IPortfolioResponse as Portfolio } from '@contracts/index';
 
 type NewPortfolio = Pick<Portfolio, 'name' | 'compound'>;
 

@@ -12,17 +12,22 @@ const menu = (loggedIn: boolean): MenuItem[] => {
     menuItems = [
       {
         title: 'Скринер',
-        iconName: 'ShowChartIcon',
+        iconName: 'ShowChart',
         link: '/',
       },
       {
         title: 'Портфолио',
-        iconName: 'BusinessCenterIcon',
+        iconName: 'BusinessCenter',
         link: '/portfolios',
       },
       {
+        title: 'Эксперты',
+        iconName: 'SentimentVerySatisfied',
+        link: '/experts',
+      },
+      {
         title: 'Выйти',
-        iconName: 'BusinessCenterIcon',
+        iconName: 'Logout',
         link: '/api/auth/signout',
       },
     ];

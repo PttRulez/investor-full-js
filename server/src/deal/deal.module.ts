@@ -2,17 +2,17 @@ import { Module } from '@nestjs/common';
 import { DealService } from './deal.service';
 import { DealController } from './deal.controller';
 import { DealRepository } from './deal.repository';
-import { MoexShareRepository } from 'src/moex/moex.share-repository';
-import { MoexApi } from 'src/moex/moex-api.service';
-import { MoexBondRepository } from 'src/moex/moex.bond-repository';
+import { MoexShareService } from 'src/moex/shares/share.service';
+import { MoexApi } from 'src/moex/iss-api/moex-api.service';
+import { MoexBondService } from 'src/moex/bonds/bond.service';
 
 @Module({
   providers: [
-    DealService,
     DealRepository,
-    MoexShareRepository,
-    MoexBondRepository,
+    DealService,
     MoexApi,
+    MoexBondService,
+    MoexShareService,
   ],
   controllers: [DealController],
 })

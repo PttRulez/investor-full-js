@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { UserRepository } from '../user/user.repository';
-import { IUserResponse } from '@contracts/responses';
+import { IUserResponse } from '@contracts/index';
 import { Role } from '@contracts/other/enums';
 import { hash } from 'argon2';
 import { LoginData, RegisterData } from './types';
@@ -15,7 +15,9 @@ export class AuthService {
       registerData.role = Role.INVESTOR;
     }
 
-    const userExists = await this.userRepository.findUserByEmail(registerData.email);
+    const userExists = await this.userRepository.findUserByEmail(
+      registerData.email,
+    );
     if (userExists) throw new ForbiddenException('Email is already in use');
 
     const hashedPassword = await hash(registerData.password);
@@ -28,11 +30,15 @@ export class AuthService {
   }
 
   async login(loginData: LoginData): Promise<IUserResponse> {
-    const userFound = await this.userRepository.findUserByEmail(loginData.email);
+    const userFound = await this.userRepository.findUserByEmail(
+      loginData.email,
+    );
 
     if (!userFound) throw new ForbiddenException('Credentials incorrect');
 
-    const passwordMatches = await userFound.validatePassword(loginData.password);
+    const passwordMatches = await userFound.validatePassword(
+      loginData.password,
+    );
     if (!passwordMatches) throw new ForbiddenException('Credentials incorrect');
 
     return userFound.toJSON();

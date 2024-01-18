@@ -3,7 +3,7 @@ import { Portfolio } from 'src/portfolio/portfolio.model';
 import { PrismaDealWithRelations } from './types/repo';
 import { IDealResponse } from '@contracts/responses/deal';
 import { DealType, Exchange, SecurityType } from '@contracts/other/enums';
-import { CreateDealDto, UpdateDealDto } from '@contracts/dtos';
+import { CreateDealDto, UpdateDealDto } from '@contracts/index';
 
 type DealConstructorData = PrismaDeal | PrismaDealWithRelations | CreateDealDto | UpdateDealDto;
 
@@ -16,7 +16,7 @@ export class Deal {
   portfolio?: Portfolio;
   price: number;
   securityId: number = 0;
-  secType: SecurityType;
+  securityType: SecurityType;
   ticker: string;
   type: DealType;
 
@@ -26,7 +26,7 @@ export class Deal {
     this.exchange = data.exchange as Exchange;
     this.portfolioId = data.portfolioId;
     this.price = Number(data.price);
-    this.secType = data.secType as SecurityType;
+    this.securityType = data.securityType as SecurityType;
     this.ticker = data.ticker;
     this.type = data.type as DealType;
 
@@ -52,13 +52,11 @@ export class Deal {
   }
 
   isShare() {
-    console.log('DEAL model this.secType === SecurityType.SHARE', this.secType, this.secType === SecurityType.SHARE);
-    return this.secType === SecurityType.SHARE;
+    return this.securityType === SecurityType.SHARE;
   }
 
   isBond() {
-    console.log('DEAL model this.secType === SecurityType.BOND', this.secType, this.secType === SecurityType.BOND);
-    return this.secType === SecurityType.BOND;
+    return this.securityType === SecurityType.BOND;
   }
 
   forPrismaCreate(): DealPrismaCreateData {
@@ -68,7 +66,7 @@ export class Deal {
       exchange: this.exchange,
       portfolioId: this.portfolioId,
       price: this.price,
-      secType: this.secType,
+      securityType: this.securityType,
       securityId: this.securityId,
       ticker: this.ticker,
       type: this.type,

@@ -1,19 +1,18 @@
 import { FC } from 'react';
-import { Control, Controller } from 'react-hook-form';
+import { Control, Controller, FieldValues } from 'react-hook-form';
 import SelectInput, { SelectProps } from '../NonFormInputs/SelectInput';
 import { SelectChangeEvent } from '@mui/material';
+import { ControlledField } from '@/types/ui';
 
-interface FormSelectProps extends SelectProps {
-  control: Control;
-  name: string;
-}
+type FormSelectInputProps<T extends FieldValues> = ControlledField<T> &
+  SelectProps;
 
-const FormSelect: FC<FormSelectProps> = ({
+const FormSelect = <G extends FieldValues>({
   control,
   name,
   onChange,
   ...selectProps
-}) => {
+}: FormSelectInputProps<G>) => {
   return (
     <Controller
       control={control}

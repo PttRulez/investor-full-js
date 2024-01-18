@@ -1,7 +1,14 @@
-import { Body, Controller, Delete, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { DealService } from './deal.service';
-import { CreateDealDto } from '@contracts/dtos';
-import { IDealResponse } from '@contracts/responses';
+import { CreateDealDto, IDealResponse } from '@contracts/index';
 import { Deal } from './deal.model';
 
 @Controller('deal')

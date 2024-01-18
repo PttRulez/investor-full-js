@@ -9,7 +9,7 @@
 // import FormDatePicker from '@/components/ui/Forms/FormDatePicker';
 // import investorService from '@/axios/investor';
 // import { moexStockTypeToGeneralType } from '@/constants/moex';
-// import { UpdateDealDto } from '@contracts/dtos';
+// import { UpdateDealDto } from '@contracts/index';
 // import { IDealResponse } from '@contracts/responses';
 
 // interface DealFormProps {

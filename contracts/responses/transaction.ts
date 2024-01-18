@@ -6,11 +6,3 @@ export interface ITransactionResponse {
 	type: TransactionType;
 	date: Date;
 }
-
-export interface ICashoutResponse extends ITransactionResponse {
-	type: TransactionType.CASHOUT
-}
-
-export interface IDepositResponse extends ITransactionResponse {
-	type: TransactionType.DEPOSIT
-}

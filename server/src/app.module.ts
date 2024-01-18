@@ -7,26 +7,32 @@ import { APP_GUARD, Reflector } from '@nestjs/core';
 import { SessionGuard } from './auth/guards';
 import { UserModule } from './user/user.module';
 import { AdminGuard } from './auth/guards/admin.guard';
-import { DepositModule } from './deposit/deposit.module';
-import { CashoutModule } from './cashout/cashout.module';
 import { DealModule } from './deal/deal.module';
+import { TransactionModule } from './transaction/transaction.module';
 import { MoexModule } from './moex/moex.module';
 import { GlobalHttpModule as HttpModule } from './http/http.module';
+import { ExpertModule } from './expert/expert.module';
+import { OpinionModule } from './opinion/opinion.module';
+import { PositionModule } from './position/position.module';
 
 const reflector = new Reflector();
 
 @Module({
   imports: [
     AuthModule,
-    CashoutModule,
     ConfigModule.forRoot({ isGlobal: true }),
     DealModule,
-    DepositModule,
+    ExpertModule,
     HttpModule,
     MoexModule,
+    OpinionModule,
     PortfolioModule,
     PrismaModule,
+    TransactionModule,
     UserModule,
+    ExpertModule,
+    OpinionModule,
+    PositionModule,
   ],
   providers: [
     {

@@ -1,10 +1,9 @@
 'use client';
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Box, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import { signIn } from 'next-auth/react';
-import { RegisterDto } from '@contracts/dtos';
+import { RegisterDto } from '@contracts/index';
 import investorService from '@/axios/investor/investor.service';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
@@ -13,11 +12,14 @@ const Login: FC = () => {
   const { handleSubmit, register } = useForm<RegisterDto>();
   const router = useRouter();
 
-  const registerUser = useMutation((formData: RegisterDto) => investorService.auth.register(formData), {
-    onSuccess: () => {
-      router.push('/login');
+  const registerUser = useMutation(
+    (formData: RegisterDto) => investorService.auth.register(formData),
+    {
+      onSuccess: () => {
+        router.push('/login');
+      },
     },
-  });
+  );
 
   const onSubmit: SubmitHandler<RegisterDto> = async data => {
     registerUser.mutate(data);
@@ -48,10 +50,24 @@ const Login: FC = () => {
           padding: 4,
         }}
       >
-        <TextField label="Имя или никнейм" variant="standard" {...register('name')} />
+        <TextField
+          label="Имя или никнейм"
+          variant="standard"
+          {...register('name')}
+        />
         <TextField label="Email" variant="standard" {...register('email')} />
-        <TextField label="Пароль" variant="standard" type="password" {...register('password')} />
-        <LoadingButton variant="outlined" color="inherit" type="submit" loading={registerUser.isLoading}>
+        <TextField
+          label="Пароль"
+          variant="standard"
+          type="password"
+          {...register('password')}
+        />
+        <LoadingButton
+          variant="outlined"
+          color="inherit"
+          type="submit"
+          loading={registerUser.isLoading}
+        >
           Зарегистрироваться
         </LoadingButton>
       </Box>
