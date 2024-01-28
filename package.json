@@ -1,21 +1,22 @@
 {
-  "name": "investor",
+  "name": "investor-turborepo",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
-    "client": "cd client && npm start",
-    "client:dev": "cd client && npm run dev",
-    "server": "cd server && npm start",
-    "server:dev": "cd server && npm run start:dev",
-    "assets": "cd assets && ionic serve",
-    "start": "concurrently \"npm run server\" \"npm run client\"",
-    "start:dev": "concurrently \"npm run server:dev\" \"npm run client:dev\""
+    "build": "turbo run build",
+    "clean": "turbo run clean",
+    "dev": "turbo run dev",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "lint": "turbo run lint",
+    "test": "turbo run test"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
-    "concurrently": "^8.2.2"
-  }
+    "concurrently": "^8.2.2",
+    "turbo": "^1.11.3"
+  },
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ]
 }
