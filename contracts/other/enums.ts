@@ -36,6 +36,10 @@ export enum TransactionType {
 
 //  MOEX
 
+export enum MoexEngine {
+  stock = 'stock',
+  currency = 'currency'
+}
 
 export enum MoexMarket {
   shares = 'shares',

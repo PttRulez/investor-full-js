@@ -24,6 +24,11 @@ const menu = (loggedIn: boolean): IMenuItem[] => {
         active: false,
       },
       {
+        title: 'Эксперты',
+        iconName: 'SentimentVerySatisfied',
+        link: '/experts',
+      },
+      {
         title: 'Выйти',
         iconName: 'Logout',
         link: '/api/auth/signout',
