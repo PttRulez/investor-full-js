@@ -20,11 +20,7 @@ const TransactionsTable = ({ portfolioId, transactions }: Props) => {
 
   const deleteTransaction = useMutation(
     (transaction: ITransactionResponse): Promise<ITransactionResponse> => {
-      if (transaction.type === TransactionType.CASHOUT) {
-        return investorService.transaction.deleteCashout(transaction.id);
-      } else {
-        return investorService.transaction.deleteDeposit(transaction.id);
-      }
+      return investorService.transaction.deleteTransaction(transaction.id);
     },
     {
       onSuccess: transaction => {

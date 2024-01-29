@@ -6,7 +6,7 @@ import { ControlledField } from '@/types/ui';
 
 interface FormDatePickerProps<T extends FieldValues>
   extends ControlledField<T>,
-    DatePickerProps {}
+    Omit<DatePickerProps, 'name'> {}
 
 const FormDatePicker = <G extends FieldValues>({
   control,

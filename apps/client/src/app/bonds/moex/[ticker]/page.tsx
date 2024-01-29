@@ -6,22 +6,30 @@ import { useQuery } from '@tanstack/react-query';
 import CandlestickChart from '@/components/ui/Charts/Candlestick/CandlestickChart';
 import { Typography } from '@mui/material';
 import { useParams } from 'next/navigation';
+import { dependOn } from '@/utils/react-query';
+import { CandlestickData } from 'lightweight-charts';
 
 const MoexBondTicker = (): JSX.Element => {
   const { ticker } = useParams<{ ticker: string }>();
 
-  const [chartData, setChartData] = useState(null);
+  const [chartData, setChartData] = useState<CandlestickData[] | null>(null);
   const [stockName, setStockName] = useState('');
 
-  const { data: bondInfo } = useQuery({
+  const { data: bondData } = useQuery({
     queryKey: ['info', ticker],
     queryFn: () => investorService.moexBond.getByTicker(ticker),
   });
 
   const { data: historyData } = useQuery({
     queryKey: ['history', ticker],
-    queryFn: () =>
-      moexService.getStockHistoryByTicker({ market, board, ticker }),
+    enabled: !!bondData,
+    queryFn: dependOn(bondData, bondData =>
+      moexService.getStockHistoryByTicker({
+        market: bondData.market,
+        board: bondData.board,
+        ticker,
+      }),
+    ),
   });
 
   useEffect(() => {
@@ -48,9 +56,7 @@ const MoexBondTicker = (): JSX.Element => {
       >
         {stockName}
       </Typography>
-      {chartData && (
-        <CandlestickChart data={chartData} className={styles.chart} />
-      )}
+      {chartData && <CandlestickChart data={chartData} />}
     </>
   );
 };

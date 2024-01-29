@@ -19,38 +19,14 @@ export default function Home() {
 
   const router = useRouter();
 
-  // const { data: stocksOptions, refetch } = useQuery<
-  //   IMoexSearchResults,
-  //   AxiosError,
-  //   MoexSearchAutocompleteOption[],
-  //   [string, string]
-  // >({
-  //   queryKey: ['search', debouncedValue],
-  //   queryFn: ({ queryKey }) => moexService.search(queryKey[1]),
-  //   enabled: false,
-  //   select: data => {
-  //     return data.securities.data.map(
-  //       (sec, index) =>
-  //         ({
-  //           board: sec[14],
-  //           group: sec[13],
-  //           jsxKey: `${sec[0]} ${sec[1]} ${index}`,
-  //           name: sec[4],
-  //           shortName: sec[2],
-  //           ticker: sec[1],
-  //           type: sec[12],
-  //         }) satisfies MoexSearchAutocompleteOption,
-  //     );
-  //   },
-  // });
-
   if (!session?.user) return;
 
   const changeHandler: MoexSearchHandler = async (e, value, reason) => {
-    console.log(value);
-    const type = getSecurityTypeFromMoexSecType(value.type);
-    const url = type === SecurityType.SHARE ? 'shares' : 'bonds';
-    router.push(`/${url}/moex/${value.ticker}`);
+    if (value) {
+      const type = getSecurityTypeFromMoexSecType(value.type);
+      const url = type === SecurityType.SHARE ? 'shares' : 'bonds';
+      router.push(`/${url}/moex/${value.ticker}`);
+    }
   };
 
   return (

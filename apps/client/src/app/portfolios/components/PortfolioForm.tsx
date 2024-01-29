@@ -5,10 +5,10 @@ import FormText from '@/components/ui/Forms/FormText';
 import FormCheckBox from '@/components/ui/Forms/FormCheckBox';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import investorService from '@/axios/investor/investor.service';
-import { CreatePortfolio, UpdatePortfolio } from 'contracts';
+import { CreatePortfolioData, UpdatePortfolioData } from 'contracts';
 
 interface PortfolioFormProps {
-  portfolio: CreatePortfolio | UpdatePortfolio;
+  portfolio: CreatePortfolioData | UpdatePortfolioData;
   afterSuccessfulSubmit: () => void;
 }
 
@@ -17,7 +17,7 @@ export default function PortfolioForm({
   afterSuccessfulSubmit,
 }: PortfolioFormProps) {
   const { control, handleSubmit, setValue, watch } = useForm<
-    CreatePortfolio | UpdatePortfolio
+    CreatePortfolioData | UpdatePortfolioData
   >({
     defaultValues: portfolio,
   });
@@ -25,7 +25,7 @@ export default function PortfolioForm({
   const client = useQueryClient();
 
   const createPortfolio = useMutation(
-    (formData: CreatePortfolio) =>
+    (formData: CreatePortfolioData) =>
       investorService.portfolio.createPortfolio(formData),
     {
       onSuccess: () => {
@@ -36,7 +36,7 @@ export default function PortfolioForm({
   );
 
   const updatePortfolio = useMutation(
-    (formData: UpdatePortfolio) =>
+    (formData: UpdatePortfolioData) =>
       investorService.portfolio.updatePortfolio(formData),
     {
       onSuccess: () => {
@@ -46,7 +46,7 @@ export default function PortfolioForm({
     },
   );
 
-  const onSubmit = (formData: CreatePortfolio | UpdatePortfolio) => {
+  const onSubmit = (formData: CreatePortfolioData | UpdatePortfolioData) => {
     if (!('id' in formData)) {
       createPortfolio.mutate(formData);
     } else {

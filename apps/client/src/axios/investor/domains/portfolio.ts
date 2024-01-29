@@ -1,8 +1,8 @@
 import { AxiosInstance } from 'axios';
 import {
-  CreatePortfolioDto,
+  CreatePortfolioData,
   IPortfolioResponse,
-  UpdatePortfolioDto,
+  UpdatePortfolioData,
 } from 'contracts';
 
 export class InvestorPortfolio {
@@ -32,7 +32,7 @@ export class InvestorPortfolio {
       .catch(err => console.log('[investorApi.getPortfolio ERR]:', err));
   }
 
-  createPortfolio(data: CreatePortfolioDto): Promise<IPortfolioResponse> {
+  createPortfolio(data: CreatePortfolioData): Promise<IPortfolioResponse> {
     return this.api
       .post('/portfolio', data)
       .then(res => {
@@ -41,7 +41,7 @@ export class InvestorPortfolio {
       .catch(err => console.log('[investorApi.getPortfolio ERR]:', err));
   }
 
-  updatePortfolio(data: UpdatePortfolioDto) {
+  updatePortfolio(data: UpdatePortfolioData) {
     return this.api.patch(`/portfolio`, data);
   }
 }

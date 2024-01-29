@@ -1,4 +1,4 @@
-import { CreateExpertDto, IExpertResponse } from 'contracts';
+import { CreateExpertData, IExpertResponse } from 'contracts';
 import { AxiosInstance } from 'axios';
 
 export class InvestorExpert {
@@ -8,7 +8,7 @@ export class InvestorExpert {
     this.api = api;
   }
 
-  async createExpert(data: CreateExpertDto): Promise<IExpertResponse> {
+  async createExpert(data: CreateExpertData): Promise<IExpertResponse> {
     const res = await this.api.post<IExpertResponse>('/expert', data);
     return res.data;
   }

@@ -1,5 +1,5 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
-import { LoginDto, RegisterDto, IUserResponse } from 'contracts';
+import { LoginData, RegisterData, IUserResponse } from 'contracts';
 
 export class InvestorAuth {
   private readonly api: AxiosInstance;
@@ -8,11 +8,11 @@ export class InvestorAuth {
     this.api = api;
   }
 
-  async login(dto: LoginDto): Promise<AxiosResponse<IUserResponse, any>> {
+  async login(dto: LoginData): Promise<AxiosResponse<IUserResponse, any>> {
     return this.api.post('/auth/login', { ...dto });
   }
 
-  register(dto: RegisterDto): Promise<AxiosResponse<IUserResponse, any>> {
+  register(dto: RegisterData): Promise<AxiosResponse<IUserResponse, any>> {
     return this.api.post('/auth/register', { ...dto });
   }
 }

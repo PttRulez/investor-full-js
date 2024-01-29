@@ -6,11 +6,11 @@ export const LoginSchema = z.object({
   password: z.string(),
 });
 
-export type LoginSchemaType = z.infer<typeof LoginSchema>;
+export type LoginData = z.infer<typeof LoginSchema>;
 
 export const RegisterSchema = LoginSchema.extend({
   name: z.string(),
   role: z.nativeEnum(Role).optional(),
 });
 
-export type RegisterSchemaType = z.infer<typeof RegisterSchema>;
+export type RegisterData = z.infer<typeof RegisterSchema>;

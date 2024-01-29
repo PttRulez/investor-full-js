@@ -1,4 +1,4 @@
-import { CreateDealDto, IDealResponse, UpdateDealDto } from 'contracts';
+import { CreateDealData, IDealResponse, UpdateDealData } from 'contracts';
 import { AxiosInstance } from 'axios';
 
 export class InvestorDeal {
@@ -8,7 +8,7 @@ export class InvestorDeal {
     this.api = api;
   }
 
-  async createDeal(data: CreateDealDto): Promise<IDealResponse> {
+  async createDeal(data: CreateDealData): Promise<IDealResponse> {
     const res = await this.api.post<IDealResponse>('/deal', data);
     return res.data;
   }
@@ -18,7 +18,7 @@ export class InvestorDeal {
     return res.data;
   }
 
-  updateDeal(data: UpdateDealDto) {
+  updateDeal(data: UpdateDealData) {
     return this.api.post(`/deals/${data.id}`, data);
   }
 }

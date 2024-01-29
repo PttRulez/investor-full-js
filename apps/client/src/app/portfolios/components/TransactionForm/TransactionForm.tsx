@@ -1,12 +1,15 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { TransactionSchema, TransactionSchemaType } from './validation-schema';
 import dayjs from 'dayjs';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import FormText from '@/components/ui/Forms/FormText';
 import FormDatePicker from '@/components/ui/Forms/FormDatePicker';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { CreateTransactionDto, TransactionType } from 'contracts';
+import {
+  CreateTransactionSchema,
+  CreateTransactionData,
+  TransactionType,
+} from 'contracts';
 import investorService from '@/axios/investor/investor.service';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@mui/material/Button';
@@ -20,20 +23,20 @@ type Props = {
 const TransactionForm = ({ afterSuccessfulSubmit, portfolioId }: Props) => {
   const client = useQueryClient();
   const { control, formState, handleSubmit, resetField, setValue, watch } =
-    useForm<TransactionSchemaType>({
+    useForm<CreateTransactionData>({
       defaultValues: {
         amount: undefined,
         date: dayjs().toDate(),
         portfolioId,
         type: undefined,
       },
-      resolver: zodResolver(TransactionSchema),
+      resolver: zodResolver(CreateTransactionSchema),
     });
 
   const watchAll = watch();
 
   const createTransaction = useMutation(
-    (formData: CreateTransactionDto) =>
+    (formData: CreateTransactionData) =>
       investorService.transaction.createTransaction(formData),
     {
       onSuccess: cashout => {
@@ -43,7 +46,7 @@ const TransactionForm = ({ afterSuccessfulSubmit, portfolioId }: Props) => {
     },
   );
 
-  const onSubmit: SubmitHandler<TransactionSchemaType> = data => {
+  const onSubmit: SubmitHandler<CreateTransactionData> = data => {
     createTransaction.mutate(data);
   };
 

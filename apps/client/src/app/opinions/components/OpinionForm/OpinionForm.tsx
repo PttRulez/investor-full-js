@@ -1,9 +1,8 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { OpinionSchemaType } from './validation-schema';
 import dayjs from 'dayjs';
 import DefaultFormBox from '@/components/ui/Forms/DefaultFormBox';
 import {
-  CreateOpinion,
+  CreateOpinionData,
   Exchange,
   OpinionType,
   SecurityType,
@@ -29,7 +28,7 @@ const OpinionForm = ({
   securityType,
 }: ExpertFormProps) => {
   const { control, formState, handleSubmit, resetField, setValue, watch } =
-    useForm<OpinionSchemaType>({
+    useForm<CreateOpinionData>({
       defaultValues: {
         date: dayjs().toDate(),
         exchange: Exchange.MOEX,
@@ -56,7 +55,7 @@ const OpinionForm = ({
   }, [expertsListResponse]);
 
   const createDeal = useMutation(
-    (formData: CreateOpinion) =>
+    (formData: CreateOpinionData) =>
       investorService.opinion.createOpinion(formData),
     {
       onSuccess: deal => {
@@ -65,7 +64,7 @@ const OpinionForm = ({
     },
   );
 
-  const onSubmit: SubmitHandler<OpinionSchemaType> = data => {
+  const onSubmit: SubmitHandler<CreateOpinionData> = data => {
     createDeal.mutate(data);
   };
 

@@ -3,17 +3,17 @@ import { FC } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Box, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import { RegisterSchemaType } from 'contracts';
+import { RegisterData } from 'contracts';
 import investorService from '@/axios/investor/investor.service';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
 const Register: FC = () => {
-  const { handleSubmit, register } = useForm<RegisterSchemaType>();
+  const { handleSubmit, register } = useForm<RegisterData>();
   const router = useRouter();
 
   const registerUser = useMutation(
-    (formData: RegisterSchemaType) => investorService.auth.register(formData),
+    (formData: RegisterData) => investorService.auth.register(formData),
     {
       onSuccess: () => {
         router.push('/login');
@@ -21,7 +21,7 @@ const Register: FC = () => {
     },
   );
 
-  const onSubmit: SubmitHandler<RegisterSchemaType> = async data => {
+  const onSubmit: SubmitHandler<RegisterData> = async data => {
     registerUser.mutate(data);
   };
 

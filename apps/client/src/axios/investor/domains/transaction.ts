@@ -1,4 +1,4 @@
-import { CreateTransaction, ITransactionResponse } from 'contracts';
+import { CreateTransactionData, ITransactionResponse } from 'contracts';
 import { AxiosInstance } from 'axios';
 
 export class InvestorTransaction {
@@ -9,7 +9,7 @@ export class InvestorTransaction {
   }
 
   async createTransaction(
-    data: CreateTransaction,
+    data: CreateTransactionData,
   ): Promise<ITransactionResponse> {
     const res = await this.api.post<ITransactionResponse>('/transaction', data);
     return res.data;

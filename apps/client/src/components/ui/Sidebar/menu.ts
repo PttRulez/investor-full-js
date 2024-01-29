@@ -1,12 +1,7 @@
-type MenuItem = {
-  title: string;
-  iconName: string;
-  link: string;
-  active?: boolean;
-};
+import { IMenuItem } from './MenuItem';
 
-const menu = (loggedIn: boolean): MenuItem[] => {
-  let menuItems: MenuItem[];
+const menu = (loggedIn: boolean): IMenuItem[] => {
+  let menuItems: IMenuItem[];
 
   if (loggedIn) {
     menuItems = [
@@ -14,21 +9,25 @@ const menu = (loggedIn: boolean): MenuItem[] => {
         title: 'Скринер',
         iconName: 'ShowChart',
         link: '/',
+        active: false,
       },
       {
         title: 'Портфолио',
         iconName: 'BusinessCenter',
         link: '/portfolios',
+        active: false,
       },
       {
         title: 'Эксперты',
         iconName: 'SentimentVerySatisfied',
         link: '/experts',
+        active: false,
       },
       {
         title: 'Выйти',
         iconName: 'Logout',
         link: '/api/auth/signout',
+        active: false,
       },
     ];
   } else {
@@ -37,11 +36,13 @@ const menu = (loggedIn: boolean): MenuItem[] => {
         title: 'Логин',
         iconName: 'BusinessCenterIcon',
         link: '/login',
+        active: false,
       },
       {
         title: 'Регистрация',
         iconName: 'BusinessCenterIcon',
         link: '/register',
+        active: false,
       },
     ];
   }

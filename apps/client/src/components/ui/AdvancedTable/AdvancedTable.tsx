@@ -24,7 +24,7 @@ export interface AdvancedTableColumn<T extends Record<string, any>> {
 
 interface AdvancedTableProps<T extends Record<string, any>> {
   columns: AdvancedTableColumn<T>[];
-  rows: { [key: string]: any }[];
+  rows: T[];
   sx?: SxProp;
   rowSx?: (row: { [key: string]: any }) => SxProp;
   pagination?: boolean;

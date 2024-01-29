@@ -8,11 +8,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import MoexSearch from '@/components/ui/StocksSearch/MoexSearch';
 import FormDatePicker from '@/components/ui/Forms/FormDatePicker';
 import investorService from '@/axios/investor/investor.service';
-import { CreateDealDto, DealType, Exchange } from 'contracts';
+import { DealType, Exchange } from 'contracts';
+import { CreateDealSchema, CreateDealData } from 'contracts';
 import dayjs from 'dayjs';
 import { MoexSearchAutocompleteOption } from '@/components/ui/StocksSearch/types';
 import { getSecurityTypeFromMoexSecType } from '@/utils/helpers';
-import { DealSchema, DealSchemaType } from './validation-schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import DefaultFormBox from '@/components/ui/Forms/DefaultFormBox';
 
@@ -35,16 +35,16 @@ const CreateDealForm: FC<DealFormProps> = ({
     resetField,
     setValue,
     watch,
-  } = useForm<DealSchemaType>({
+  } = useForm<CreateDealData>({
     defaultValues: {
       date: dayjs().toDate(),
       portfolioId,
       type: dealType,
-      secType: undefined,
+      securityType: undefined,
       exchange: undefined,
       ticker: undefined,
     },
-    resolver: zodResolver(DealSchema),
+    resolver: zodResolver(CreateDealSchema),
   });
   const watchAll = watch();
   const client = useQueryClient();
@@ -54,7 +54,7 @@ const CreateDealForm: FC<DealFormProps> = ({
   ) => {
     if (value) {
       setValue('exchange', Exchange.MOEX);
-      setValue('secType', getSecurityTypeFromMoexSecType(value.type));
+      setValue('securityType', getSecurityTypeFromMoexSecType(value.type));
       setValue('ticker', value.ticker);
       clearErrors('ticker');
     } else {
@@ -63,7 +63,7 @@ const CreateDealForm: FC<DealFormProps> = ({
   };
 
   const createDeal = useMutation(
-    (formData: CreateDealDto) => investorService.deal.createDeal(formData),
+    (formData: CreateDealData) => investorService.deal.createDeal(formData),
     {
       onSuccess: deal => {
         afterSuccessfulSubmit();
@@ -72,7 +72,7 @@ const CreateDealForm: FC<DealFormProps> = ({
     },
   );
 
-  const onSubmit: SubmitHandler<DealSchemaType> = data => {
+  const onSubmit: SubmitHandler<CreateDealData> = data => {
     createDeal.mutate(data);
   };
 

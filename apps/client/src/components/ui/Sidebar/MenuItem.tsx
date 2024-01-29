@@ -11,7 +11,7 @@ import * as Muicon from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
 import cn from 'classnames';
 
-interface IMenuItem {
+export interface IMenuItem {
   title: string;
   iconName?: string;
   link?: string;

@@ -1,14 +1,17 @@
-import { FC } from 'react';
 import { TableCell } from '@mui/material';
 import { AdvancedTableColumn } from './AdvancedTable';
 
-interface AdvancedCellProps {
-  column: AdvancedTableColumn;
-  row: { [key: string]: any };
+interface AdvancedCellProps<T extends Record<string, any>> {
+  column: AdvancedTableColumn<T>;
+  row: T;
   value: any;
 }
 
-const AdvancedCell: FC<AdvancedCellProps> = ({ column, row, value }) => {
+const AdvancedCell = <T extends Record<string, any>>({
+  column,
+  row,
+  value,
+}: AdvancedCellProps<T>) => {
   let renderedValue = value;
 
   if (column.format) {

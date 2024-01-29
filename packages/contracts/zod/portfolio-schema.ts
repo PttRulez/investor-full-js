@@ -9,5 +9,5 @@ export const UpdatePortfolioSchema = CreatePortfolioSchema.partial().extend({
   id: z.number(),
 });
 
-export type CreatePortfolio = z.infer<typeof CreatePortfolioSchema>;
-export type UpdatePortfolio = z.infer<typeof UpdatePortfolioSchema>;
+export type CreatePortfolioData = z.infer<typeof CreatePortfolioSchema>;
+export type UpdatePortfolioData = z.infer<typeof UpdatePortfolioSchema>;

@@ -4,15 +4,15 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { Box, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { signIn } from 'next-auth/react';
-import { LoginSchemaType } from 'contracts';
+import { LoginData } from 'contracts';
 import { useRouter } from 'next/navigation';
 
 const Login: FC = () => {
-  const { handleSubmit, register } = useForm<LoginSchemaType>();
+  const { handleSubmit, register } = useForm<LoginData>();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const onSubmit: SubmitHandler<LoginSchemaType> = async data => {
+  const onSubmit: SubmitHandler<LoginData> = async data => {
     setLoading(true);
     const loginData = await signIn('credentials', {
       email: data.email,

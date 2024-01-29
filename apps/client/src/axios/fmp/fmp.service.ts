@@ -1,6 +1,10 @@
 import { fmpApiV3 } from './fmp';
-import { historicalDaily, requestPeriodType, searchStock } from '@/types/fmpTypes/fmp.type';
-import {AxiosResponse} from 'axios';
+import {
+  historicalDaily,
+  requestPeriodType,
+  searchStock,
+} from '@/types/fmpTypes/fmp.type';
+import { AxiosResponse } from 'axios';
 
 export const fmpService = {
   search(searchParam: string): Promise<AxiosResponse<searchStock[]> | void> {
@@ -12,35 +16,40 @@ export const fmpService = {
       .catch(err => console.log('[fmpService.search err]', err));
   },
 
-  historicalDailyByTicker(ticker: string | undefined): Promise<AxiosResponse<{ symbol: string, historical: historicalDaily[]}> | void> | Promise<Awaited<{symbol: string, historical: any[]}>>{
-    if(!ticker) {
+  historicalDailyByTicker(ticker: string | undefined):
+    | Promise<AxiosResponse<{
+        symbol: string;
+        historical: historicalDaily[];
+      }> | void>
+    | Promise<Awaited<{ symbol: string; historical: any[] }>> {
+    if (!ticker) {
       return Promise.resolve({
         symbol: 'No ticker',
-        historical: []
-      })
+        historical: [],
+      });
     }
     return fmpApiV3
       .get(`/historical-price-full/${ticker}`)
       .then(res => {
         return res.data;
       })
-      .catch(err => console.log('[fmpService.historicalPriceByTicker err]', err));
-  }, 
-
-  keyMetricsTTM(ticker) {
-    return fmpApiV3
-      .get(`key-metrics-ttm/${ticker}`);
+      .catch(err =>
+        console.log('[fmpService.historicalPriceByTicker err]', err),
+      );
   },
 
-  incomeStatementAnnual(ticker) {
-		return fmpApiV3
-			.get(`income-statement/${ticker}?limit=20`);
-	},
-  balanceSheetStatementAnnual(ticker) {
-		return fmpApiV3
-			.get(`balance-sheet-statement/${ticker}?limit=20`);
-	},
-  balanceSheet(ticker: string | undefined, period: requestPeriodType = 'year') {
+  keyMetricsTTM(ticker: string) {
+    return fmpApiV3.get(`key-metrics-ttm/${ticker}`);
+  },
 
-  }
+  incomeStatementAnnual(ticker: string) {
+    return fmpApiV3.get(`income-statement/${ticker}?limit=20`);
+  },
+  balanceSheetStatementAnnual(ticker: string) {
+    return fmpApiV3.get(`balance-sheet-statement/${ticker}?limit=20`);
+  },
+  balanceSheet(
+    ticker: string | undefined,
+    period: requestPeriodType = 'year',
+  ) {},
 };

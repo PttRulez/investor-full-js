@@ -16,5 +16,5 @@ export const UpdateExpertSchema = CreateExpertSchema.partial().extend({
   id: z.number(),
 });
 
-export type CreateExpert = z.infer<typeof CreateExpertSchema>;
-export type UpdateExpert = z.infer<typeof UpdateExpertSchema>;
+export type CreateExpertData = z.infer<typeof CreateExpertSchema>;
+export type UpdateExpertData = z.infer<typeof UpdateExpertSchema>;

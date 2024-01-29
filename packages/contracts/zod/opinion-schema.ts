@@ -13,13 +13,13 @@ export const CreateOpinionSchema = z.object({
   type: z.nativeEnum(OpinionType),
 });
 
-export type CreateOpinion = z.infer<typeof CreateOpinionSchema>;
+export type CreateOpinionData = z.infer<typeof CreateOpinionSchema>;
 
 export const UpdateOpinionSchema = CreateOpinionSchema.partial().extend({
   id: z.number(),
 });
 
-export type UpdateOpinion = z.infer<typeof UpdateOpinionSchema>;
+export type UpdateOpinionData = z.infer<typeof UpdateOpinionSchema>;
 
 export const OpinionFiltersSchema = z.object({
   exchange: z.nativeEnum(Exchange).optional(),

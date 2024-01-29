@@ -1,5 +1,5 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { CreateExpertSchema, CreateExpert } from 'contracts';
+import { CreateExpertSchema, CreateExpertData } from 'contracts';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import investorService from '@/axios/investor/investor.service';
@@ -20,7 +20,7 @@ const ExpertForm = ({ afterSuccessfulSubmit }: ExpertFormProps) => {
     resetField,
     setValue,
     watch,
-  } = useForm<CreateExpert>({
+  } = useForm<CreateExpertData>({
     defaultValues: {
       avatarUrl: undefined,
       name: undefined,
@@ -32,7 +32,8 @@ const ExpertForm = ({ afterSuccessfulSubmit }: ExpertFormProps) => {
   // const client = useQueryClient();
 
   const createExpert = useMutation(
-    (formData: CreateExpert) => investorService.expert.createExpert(formData),
+    (formData: CreateExpertData) =>
+      investorService.expert.createExpert(formData),
     {
       onSuccess: expert => {
         afterSuccessfulSubmit();
@@ -43,7 +44,7 @@ const ExpertForm = ({ afterSuccessfulSubmit }: ExpertFormProps) => {
     },
   );
 
-  const onSubmit: SubmitHandler<CreateExpert> = data => {
+  const onSubmit: SubmitHandler<CreateExpertData> = data => {
     createExpert.mutate(data);
   };
 
